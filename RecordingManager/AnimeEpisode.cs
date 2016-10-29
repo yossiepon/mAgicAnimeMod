@@ -97,8 +97,9 @@ namespace magicAnime
 		public	string			mSubTitle		= "";				// サブタイトル
 		private bool			mIsDirty		= false;			// データ変更フラグ
 		private	int				mStoryNumber	= 0;				// エピソード番号
-		// mod. yossiepon_20150705
+		// add yossiepon 20150705 begin
 		private	string			mStoryNoStr		= "";				// エピソード番号文字列
+		// add yossiepon 20150705 end
 		private int				mRepeatNumber	= -1;				// n回目の放送
 		private bool			mPlanError		= false;			// 放送プランデータ異常
 
@@ -451,8 +452,9 @@ namespace magicAnime
 		}
 
 		public int StoryNumber		{ get { return mStoryNumber;  } }
-		// mod. yossiepon_20150705
+		// add yossiepon 20150705 begin
 		public string StoryNoStr	{ get { return mStoryNoStr; } }
+        // add yossiepon 20150705 end
 
 		//=========================================================================
 		///	<summary>
@@ -644,15 +646,19 @@ namespace magicAnime
 					if( !mHasPlan
 					||	(mStartTime	!= syoboiRecord.onAirDateTime)
 					||	(mLength	!= syoboiRecord.length)
-					// mod. yossiepon_20150705
+					// add yossiepon 20150705 begin
 					||	!mStoryNoStr.Equals(syoboiRecord.episode)	)
+                    // add yossiepon 20150705 end
 					{
-						// mod. yossiepon_20150705
+                        // mod yossiepon 20150705 begin
+						// mHasPlan	= true;
 						mHasPlan	= syoboiRecord.length != 0;
+                        // mod yossiepon 20150705 end
 						mStartTime	= syoboiRecord.onAirDateTime;
 						mLength		= syoboiRecord.length;
-						// mod. yossiepon_20150705
+						// add yossiepon 20150705 begin
 						mStoryNoStr	= syoboiRecord.episode;
+                        // add yossiepon 20150705 begin
 						Dirty		= true;
 					}
 
@@ -1262,10 +1268,11 @@ namespace magicAnime
 					subTitleName,
 					dateStr,
 					timeStr,
-					// mod. yossiepon_20150705 begin
+                    // mod yossiepon 20150705 begin
+					// station);
 					station,
 					mStoryNoStr.Length > 0 ? mStoryNoStr : mStoryNumber.ToString(Settings.Default.storyNoFormat));
-					// mod. yossiepon_20150705 end
+					// mod yossiepon 20150705 end
 			}
 			catch(Exception ex)
 			{
@@ -1312,10 +1319,11 @@ namespace magicAnime
 					mSubTitle,
 					dateStr,
 					timeStr,
-					// mod. yossiepon_20150705 begin
+                    // mod yossiepon 20150705 begin
+					// station);
 					station,
 					mStoryNoStr.Length > 0 ? mStoryNoStr : mStoryNumber.ToString(Settings.Default.storyNoFormat));
-					// mod. yossiepon_20150705 end
+					// mod yossiepon 20150705 end
 			}
 			catch(Exception ex)
 			{
@@ -1505,8 +1513,9 @@ namespace magicAnime
 			xw.WriteStartElement("Records");
 
 			xw.WriteElementString("StoryNumber"		, Convert.ToString(mStoryNumber));
-			// mod. yossiepon_20150705
+			// add yossiepon 20150705 begin
 			xw.WriteElementString("StoryNoStr"		, mStoryNoStr);
+            // add yossiepon 20150705 end
 			xw.WriteElementString("FilePath"		, mFilePath);
 			xw.WriteElementString("DateTime"		, Convert.ToString(mStartTime.Ticks));
 			xw.WriteElementString("SubTitle"		, mSubTitle);
@@ -1544,9 +1553,10 @@ namespace magicAnime
 				{
 					if (xr.LocalName.Equals("StoryNumber"))
 						mStoryNumber = xr.ReadElementContentAsInt();
-					// mod. yossiepon_20150705
+					// add yossiepon 20150705 begin
 					else if (xr.LocalName.Equals("StoryNoStr"))
 						mStoryNoStr = xr.ReadElementContentAsString();
+                    // add yossiepon 20150705 end
 					else if (xr.LocalName.Equals("FilePath"))
 						mFilePath = xr.ReadElementContentAsString();
 					// Ver1.9.18以前からの以降
@@ -1589,12 +1599,12 @@ namespace magicAnime
 						break;
 			}
 
-			// mod. yossiepon_20150705 begin
+			// add yossiepon 20150705 begin
 			if (mStoryNoStr.Length == 0)
 			{
 				mStoryNoStr = mStoryNumber.ToString(Settings.Default.storyNoFormat);
 			}
-			// mod. yossiepon_20150705 end
+			// add yossiepon 20150705 end
 		}
 
 		// Ver1.9.18以前からのデータ移行用

@@ -44,8 +44,9 @@ namespace magicAnime
 			SubtitleTextBox.Text	= r.mSubTitle;
 			FileTextBox.Text		= r.FilePath;
 			StoryNumberUpdown.Value	= r.StoryNumber;
-			// mod. yossipon_20150815 begin
+			// add yossipon 20150815 begin
 			StoryNoTextBox.Text		= r.StoryNoStr;
+            // add yossipon 20150815 end
 
 			hasPlanCheckBox.Checked		= r.HasPlan;
 			if( r.HasPlan )

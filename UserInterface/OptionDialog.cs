@@ -562,10 +562,11 @@ namespace magicAnime
 					"東奔西走アニメライフ",
 					"20070401",
 					"2500",
-					// mod. yossiepon_20150705 begin
+                    // mod yossiepon 20150705 begin
+                    // "東都テレビ"
 					"東都テレビ",
 					"SP1");
-					// mod. yossiepon_20150705 end
+					// mod yossiepon 20150705 end
 
 				sampleNameFormatTextBox.Text = sampleText;
 			}

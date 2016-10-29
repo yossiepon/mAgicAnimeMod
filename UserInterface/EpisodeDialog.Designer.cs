@@ -356,6 +356,11 @@
             0,
             0,
             0});
+            this.StoryNumberUpdown.Minimum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            -2147483648});
 			this.StoryNumberUpdown.Name = "StoryNumberUpdown";
 			this.StoryNumberUpdown.ReadOnly = true;
 			this.StoryNumberUpdown.Size = new System.Drawing.Size(49, 22);

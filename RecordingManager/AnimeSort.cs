@@ -76,12 +76,20 @@ namespace magicAnime
 			//--------------------------
 			// 話数が0の場合は前に回す
 			//--------------------------
-			if( (x.StoryCount == 0) && (y.StoryCount == 0) )
+            // mod yossiepon 20160808 begin
+            //if ((x.StoryCount == 0) && (y.StoryCount == 0))
+            //    return 0;
+            //if ((x.StoryCount != 0) && (y.StoryCount == 0))
+            //    return +1;
+            //if ((x.StoryCount == 0) && (y.StoryCount != 0))
+            //    return -1;
+            if ( ((x.StoryCount + x.SpecialStoryCount) == 0) && ((y.StoryCount + y.SpecialStoryCount) == 0) )
 				return 0;
-			if( (x.StoryCount != 0) && (y.StoryCount == 0) )
+			if ( ((x.StoryCount + x.SpecialStoryCount) != 0) && ((y.StoryCount + y.SpecialStoryCount) == 0) )
 				return +1;
-			if( (x.StoryCount == 0) && (y.StoryCount != 0) )
+			if ( ((x.StoryCount + x.SpecialStoryCount) == 0) && ((y.StoryCount + y.SpecialStoryCount) != 0) )
 				return -1;
+            // mod yossiepon 20160808 end
 
 			//--------------------------
 			// 放送終了分を末尾に回す
@@ -125,15 +133,25 @@ namespace magicAnime
 				//------------------------------------
 
 				aCount = 0;
-				foreach( AnimeEpisode aRecord in x.Episodes )
+				// mod yossiepon 20160924 begin
+				// foreach( AnimeEpisode aRecord in x.Episodes )
+				foreach( AnimeEpisode aRecord in x.NormalEpisodes )
+				// mod yossiepon 20160924 end
 				{
 					if( (orderOption & OrderOption.Limit1CoursOption) != 0 )		// 最新1クールに限るオプション(070612)
 					{
-						if( aRecord.StoryNumber < x.StoryCount - 13 )
-							continue;
-					}
-// <MOD> 2009/12/28 ->
-					if( aRecord.HasPlan )
+                        // mod yossiepon 20160808 begin
+                        //if (aRecord.StoryNumber < x.StoryCount - 13)
+                        //    continue;
+                        if (x.StoryCount >= 13)
+                        {
+                            if (aRecord.StoryNumber < x.StoryCount - 13)
+								continue;
+						}
+                        // mod yossiepon 20160808 end
+                    }
+                    // <MOD> 2009/12/28 ->
+                    if( aRecord.HasPlan )
 //					if( aRecord.CurrentState != AnimeEpisode.State.Undecided )
 // <MOD> 2009/12/28 <-
 					{
@@ -147,13 +165,23 @@ namespace magicAnime
 				}
 
 				bCount = 0;
-				foreach( AnimeEpisode bRecord in y.Episodes )
+				// mod yossiepon 20160924 begin
+				// foreach( AnimeEpisode bRecord in y.Episodes )
+				foreach( AnimeEpisode bRecord in y.NormalEpisodes )
+				// mod yossiepon 20160924 end
 				{
 					if( (orderOption & OrderOption.Limit1CoursOption) != 0 )		// 最新1クールに限るオプション(070612)
 					{
-						if( bRecord.StoryNumber < y.StoryCount - 13 )
-							continue;
-					}
+                        // mod yossiepon 20160808 begin
+                        //if (bRecord.StoryNumber < y.StoryCount - 13)
+                        //    continue;
+                        if (y.StoryCount >= 13)
+                        {
+                            if (bRecord.StoryNumber < y.StoryCount - 13)
+								continue;
+						}
+                        // mod yossiepon 20160808 end
+                    }
 // <MOD> 2009/12/28 ->
 					if( bRecord.HasPlan )
 //					if( bRecord.CurrentState != AnimeEpisode.State.Undecided )

@@ -67,6 +67,9 @@ namespace magicAnime
 		public string						filterKeyword			= "";		// フィルタ文字列
 
 		private	int							mStoryCount;
+        // add yossiepon 20160806 begin
+        private int                         mSpecialStoryCount;
+        // add yossiepon 20160806 end
 		private	uint						mHashCode			= 0;
 		private	AnimeServer					mParent;
 		private bool						mIsDirty			= false;	// 変更フラグ
@@ -74,7 +77,10 @@ namespace magicAnime
 		private List<Scheduler.Profile>		mSchedulerProfiles;
 		private Type						mEncoderType		= null;		// エンコーダクラスのType
 		private EncodeProfile				mEncoderProfile		= null;		// エンコーダ設定
-		private EpisodeList					mEpisodes;						// この番組の各話(Episode)の集合
+		private EpisodeList					mEpisodes;						// この番組の符番された各話(Episode)の集合
+        // add yossiepon 20160806 begin
+		private EpisodeList					mSpecialEpisodes;				// この番組の符番されていない各話(Episode)の集合
+        // add yossiepon 20160806 end
 		private	Mutex						mEpisodeLock		= new Mutex();
 		private DateTime					mLastUpdate;					// データｰベースからの最終更新時刻
 		private Image						mThambnailImage		= null;
@@ -136,6 +142,10 @@ namespace magicAnime
 					mEpisodeLock.WaitOne();
 					foreach (AnimeEpisode episode in mEpisodes)
 						childDirty |= episode.Dirty;
+                    // add yossiepon 20160806 begin
+                    foreach (AnimeEpisode episode in mSpecialEpisodes)
+                        childDirty |= episode.Dirty;
+                    // add yossiepon 20160806 end
 				}
 				finally
 				{
@@ -153,6 +163,10 @@ namespace magicAnime
 						mEpisodeLock.WaitOne();
 						foreach (AnimeEpisode episode in mEpisodes)
 							episode.Dirty = false;
+                        // add yossiepon 20160806 begin
+                        foreach (AnimeEpisode episode in mSpecialEpisodes)
+                            episode.Dirty = false;
+                        // add yossiepon 20160806 end
 					}
 					finally
 					{
@@ -215,6 +229,61 @@ namespace magicAnime
 				}
 			}
 		}
+
+        // add yossiepon 20160806 begin
+        //=========================================================================
+        ///	<summary>
+        ///		話数の取得と変更
+        ///	</summary>
+        /// <remarks>
+        /// </remarks>
+        /// <history>2006/XX/XX 新規作成</history>
+        //=========================================================================
+        public int SpecialStoryCount
+        {
+            get { return mSpecialStoryCount; }
+            set
+            {
+                int i;
+
+                try
+                {
+                    mEpisodeLock.WaitOne();
+
+                    this.mIsDirty = true;
+
+                    if (mSpecialEpisodes == null)
+                    {
+                        mSpecialEpisodes = new EpisodeList();
+                    }
+
+                    //-----------------------------------
+                    // Episodeリストを話数にあわせて拡大
+                    //-----------------------------------
+                    if (mSpecialStoryCount < value)
+                    {
+                        for (i = mSpecialStoryCount; i < value; ++i)
+                        {
+                            mSpecialEpisodes.Add(new AnimeEpisode(this, -(i + 1)));
+                        }
+                    }
+                    else
+                    {
+                        for (i = mSpecialStoryCount; value < i; --i)
+                        {
+                            mSpecialEpisodes.RemoveAt(i - 1);
+                        }
+                    }
+
+                    mSpecialStoryCount = value;
+                }
+                finally
+                {
+                    mEpisodeLock.ReleaseMutex();
+                }
+            }
+        }
+        // add yossiepon 20160806 end
 
 		//=========================================================================
 		///	<summary>
@@ -328,8 +397,45 @@ namespace magicAnime
 
 					EpisodeList coppied = new EpisodeList();
 					
-					foreach( AnimeEpisode ep in mEpisodes )
-						coppied.Add( ep );
+                    foreach (AnimeEpisode ep in mEpisodes)
+                        coppied.Add(ep);
+                    // add yossiepon 20160806 begin
+                    foreach (AnimeEpisode ep in mSpecialEpisodes)
+                        coppied.Add(ep);
+                    // add yossiepon 20160806 end
+
+                    return coppied;
+                }
+                finally
+                {
+                    mEpisodeLock.ReleaseMutex();
+                }
+            }
+        }
+
+        // add yossiepon 20160924 begin
+        //=========================================================================
+        ///	<summary>
+        ///		通常エピソードのリストを返す
+        ///	</summary>
+        /// <remarks>
+        ///		リストオブジェクトのコピーを返す。
+        ///		上位がリストを変更してもこちらのデータに影響しない。
+        /// </remarks>
+        /// <history>2006/XX/XX 新規作成</history>
+        //=========================================================================
+        public EpisodeList NormalEpisodes
+        {
+            get
+            {
+                try
+                {
+                    mEpisodeLock.WaitOne();
+
+                    EpisodeList coppied = new EpisodeList();
+
+                    foreach (AnimeEpisode ep in mEpisodes)
+                        coppied.Add(ep);
 
 					return coppied;
 				}
@@ -342,6 +448,39 @@ namespace magicAnime
 
 		//=========================================================================
 		///	<summary>
+        ///		特番エピソードのリストを返す
+        ///	</summary>
+        /// <remarks>
+        ///		リストオブジェクトのコピーを返す。
+        ///		上位がリストを変更してもこちらのデータに影響しない。
+        /// </remarks>
+        /// <history>2006/XX/XX 新規作成</history>
+        //=========================================================================
+        public EpisodeList SpecialEpisodes
+        {
+            get
+            {
+                try
+                {
+                    mEpisodeLock.WaitOne();
+
+                    EpisodeList coppied = new EpisodeList();
+
+                    foreach (AnimeEpisode ep in mSpecialEpisodes)
+                        coppied.Add(ep);
+
+                    return coppied;
+                }
+                finally
+                {
+                    mEpisodeLock.ReleaseMutex();
+                }
+            }
+        }
+        // add yossiepon 20160924 end
+
+        //=========================================================================
+        ///	<summary>
 		///		番組固有IDを返す
 		///	</summary>
 		/// <remarks>
@@ -492,24 +631,25 @@ namespace magicAnime
 			}
 		}
 
-		
-		//=========================================================================
-		///	<summary>
-		///		第n話のエピソードを取得する(1～)
-		///	</summary>
-		/// <remarks>
-		/// </remarks>
-		/// <history>2006/XX/XX 新規作成</history>
-		//=========================================================================
-		public AnimeEpisode this[int storyNumber]
-		{
-			get
-			{
-				if (storyNumber < 1 || mStoryCount < storyNumber)
-					throw new Exception("内部エラー: 話数が範囲外です");
-				return (AnimeEpisode)mEpisodes[storyNumber - 1];
-			}
-		}
+		// del yossiepon 20160806 begin
+        ////=========================================================================
+        /////	<summary>
+        /////		第n話のエピソードを取得する(1～)
+        /////	</summary>
+        ///// <remarks>
+        ///// </remarks>
+        ///// <history>2006/XX/XX 新規作成</history>
+        ////=========================================================================
+        //public AnimeEpisode this[int storyNumber]
+        //{
+        //    get
+        //    {
+        //        if (storyNumber < 1 || mStoryCount < storyNumber)
+        //            throw new Exception("内部エラー: 話数が範囲外です");
+        //        return (AnimeEpisode)mEpisodes[storyNumber - 1];
+        //    }
+        //}
+		// del yossiepon 20160806 end
 
 		public delegate void EnumRecordCallBack(AnimeEpisode record, object param);
 
@@ -528,7 +668,10 @@ namespace magicAnime
 				callBack(episode, param);
 			}
 
-			return mEpisodes.Count;
+            // mod yossiepon 20160806 begin
+            // return mEpisodes.Count;
+            return mEpisodes.Count + mSpecialEpisodes.Count;
+            // mod yossiepon 20160806 end
 		}
 
 
@@ -573,6 +716,7 @@ namespace magicAnime
 			if( Episodes.Count == 0 )
 				return NextEpisode.NextUnknown;
 
+			// del by 7sh 2.0.14.10 2012-03-30 begin
             /* しょぼカルは、すべて登録されていな場合がある
 			AnimeEpisode lastEpisode = Episodes[Episodes.Count-1];
 
@@ -583,6 +727,7 @@ namespace magicAnime
 				return NextEpisode.EndProgram;
 			}
             */
+			// del by 7sh 2.0.14.10 2012-03-30 end
 			
 			//
 			// dateTime以降、リストの中で最も早く放送するEpisodeを見つける
@@ -608,7 +753,10 @@ namespace magicAnime
 			}
 
 			if (earlyOnAir==null)
+				// mod by 7sh 2.0.14.10 2012-03-30 begin
+				// return NextEpisode.NextUnknown;
                 return NextEpisode.EndProgram;
+				// mod by 7sh 2.0.14.10 2012-03-30 end
 
 			return NextEpisode.NextDecided;
 		}
@@ -663,22 +811,30 @@ namespace magicAnime
 				// 話数が増えた場合はリスト拡充
 				//--------------------------------
 				int maxNumber = 0;
+                // add yossiepon 20160808 begin
+                int minNumber = 0;
+                // add yossiepon 20160808 end
 
+                // mod yossiepon 20160808 begin
+                // foreach (SyoboiCalender.SyoboiRecord record in syoboiList)
+                //     maxNumber = System.Math.Max(maxNumber, record.number);
 				foreach (SyoboiCalender.SyoboiRecord record in syoboiList)
-					maxNumber = System.Math.Max(maxNumber, record.number);
+                {
+                    if (syoboiTvStation == record.tvStation)
+                    {
+						maxNumber = System.Math.Max(maxNumber, record.number);
+                        minNumber = System.Math.Min(minNumber, record.number);
+                    }
+                }
+                // mod yossiepon 20160808 end
 
 				if (StoryCount < maxNumber)
 					StoryCount = maxNumber;	// 話数が増えた場合だけ増やす
 
-                //------------------------------------
-                // 話数未設定項目の確認
-                //------------------------------------
-                foreach (AnimeEpisode episode in Episodes)
-                {
-                    maxNumber = SyoboiCalender.Unnumbers(episode.Parent.syoboiTvStation, ref syoboiList);
-                }
-                if (StoryCount < maxNumber)
-                    StoryCount = maxNumber;	// 話数が増えた場合だけ増やす
+                // add yossiepon 20160808 begin
+                if (SpecialStoryCount < -minNumber)
+                    SpecialStoryCount = -minNumber; // 特番回が増えた場合だけ増やす
+                // add yossiepon 20160808 end
 
 				//-------------------------------
 				// エピソードごと放送データ更新
@@ -947,6 +1103,9 @@ namespace magicAnime
 
 			xw.WriteElementString("Title"				, title);
 			xw.WriteElementString("StoryCount"			, Convert.ToString(mStoryCount));
+            // add yossiepon 20160808 begin
+            xw.WriteElementString("SpecialStoryCount"   , Convert.ToString(mSpecialStoryCount));
+            // add yossiepon 20160808 end
 			xw.WriteElementString("LinkOnlineDatabase"	, linkOnlineDatabase ? "1" : "0");
 			xw.WriteElementString("SyoboiTID"			, Convert.ToString(syoboiTid));
 			
@@ -1011,6 +1170,9 @@ namespace magicAnime
 			mSchedulerProfiles.Clear();
 
 			mEpisodes = new EpisodeList();
+            // add yossiepon 20160808 begin
+            mSpecialEpisodes = new EpisodeList();
+            // add yossiepon 20160808 end
 			mEncoderProfile	= null;
 			int	length = 0;
 
@@ -1024,6 +1186,10 @@ namespace magicAnime
 						title = xr.ReadString();
 					else if (xr.LocalName.Equals("StoryCount"))
 						mStoryCount = xr.ReadElementContentAsInt();
+                    // add yossiepon 20160808 begin
+                    else if (xr.LocalName.Equals("SpecialStoryCount"))
+                        mSpecialStoryCount = xr.ReadElementContentAsInt();
+                    // add yossiepon 20160808 end
 					else if (xr.LocalName.Equals("Length"))
 						length = xr.ReadElementContentAsInt();
 					else if (xr.LocalName.Equals("LinkOnlineDatabase"))
@@ -1066,8 +1232,18 @@ namespace magicAnime
 
 						episode.Read(xr);
 
-						mEpisodes.Add(episode);
-					}
+                        // mod yossiepon 20160808 begin
+                        // mEpisodes.Add(episode);
+                        if(episode.StoryNumber > 0)
+                        {
+							mEpisodes.Add(episode);
+						}
+                        else
+                        {
+                            mSpecialEpisodes.Add(episode);
+                        }
+                        // mod yossiepon 20160808 begin
+                    }
 					else if (xr.LocalName.Equals("EncodeClass"))
 					{
 						Encoder encoder;

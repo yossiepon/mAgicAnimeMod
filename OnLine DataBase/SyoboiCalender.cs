@@ -31,8 +31,9 @@ namespace magicAnime
 	//=========================================================================
 	class SyoboiCalender
 	{
-		// mod. yossiepon_20150705
+		// add yossiepon 20150705 begin
 		public const int UNNUMBERED_EPISODE = int.MinValue;
+        // add yossiepon 20150705 end
 
 		DateTime?	prevUpdateListGetTime	= null;			// 前回の更新リスト取得時刻
 
@@ -81,8 +82,9 @@ namespace magicAnime
 		//=========================================================================
 		public class SyoboiRecord : ICloneable
 		{
-			// mod. yossiepon_20150705
+			// add yossiepon 20150705 begin
 			public string episode;
+			// add yossiepon 20150705 end
 			public int number;
 			public string subtitle;
 			public string tvStation;
@@ -95,7 +97,7 @@ namespace magicAnime
 				return this.MemberwiseClone();
 			}
 
-			// mod. yossiepon_20150705 begin
+			// add yossiepon 20150705 begin
 			//=========================================================================
 			///	<summary>
 			///		フォーマットされた番組エピソード文字列を返す
@@ -108,7 +110,7 @@ namespace magicAnime
 			{
 				return tvStation + "-No." + number + "(" + episode + ")「" + subtitle + "」(" + length + " min.)/" + onAirDateTime;
 			}
-			// mod. yossiepon_20150705 end
+			// add yossiepon 20150705 end
 		}
 
 		public class SyoboiUpdate
@@ -403,8 +405,10 @@ namespace magicAnime
 					Match	matchTitle	= parseTitle.Match(line);
 
 					if( matchTitle.Success )
-						// mod. yossiepon_20150705
+						// mod yossiepon 20150705 begin
+						// title = matchTitle.Groups["Title"].Value;
 						title = HttpUtility.HtmlDecode( matchTitle.Groups["Title"].Value );
+						// mod yossiepon 20150705 end
 				}
 
 				allLine += line;
@@ -447,6 +451,11 @@ namespace magicAnime
 
 			source = lines;
 
+            // add yossiepon 20160808 begin
+            // 特番回に負の回数を符番する
+            NumberSpecialEpisodes(ref recordList);
+            // add yossiepon 20160808 end
+
 			return recordList;
 		}
 
@@ -470,7 +479,7 @@ namespace magicAnime
 				ArrayList Cols;
 				string temp;
 
-				// mod. yossiepon_20150705 begin
+				// mod yossiepon 20150705 begin
 
 				List<decimal>	dummyNums		= new List<decimal>();
 
@@ -499,13 +508,13 @@ namespace magicAnime
 					// マッチした場合
 					if (match.Success)
 					{
-						// 最初と最後が端数だった場合、それぞれ１話増えるようにfloorとceilingにしておく
-						// ※中間に端数が含まれる場合、放送データからだけでは判別がつかず極めて稀なパターンと思われるので考慮しない
 						decimal firstEpisode = Decimal.Parse(match.Groups["FirstEpisode"].Value);
 						decimal lastEpisode	= Decimal.Parse(match.Groups["LastEpisode"].Value);
 
 						// 連続話数は分割せずにまとめて録画する
-						syoboiRecord.episode = firstEpisode + "～" + lastEpisode;			// 話番号文字列（マッチ結果全体をそのまま入れる）
+
+                        // 話番号文字列（マッチ結果全体をそのまま入れる）
+                        syoboiRecord.episode = formatEpisodeNo(firstEpisode) + "～" + formatEpisodeNo(lastEpisode);	
 						syoboiRecord.number	= convertDecimalEpisodeNoToInt(firstEpisode);	// 話番号（１つ目）
 
 						// HTMLエンコード文字をデコード
@@ -519,8 +528,8 @@ namespace magicAnime
 						}
 
 						// 最初の話数から最後の話数までをダミー話数リストに追加する
-						// 最後の話数が端数の場合は、その前までが追加される
-						for(int i = Decimal.ToInt32(Decimal.Ceiling(firstEpisode)); i <= Decimal.ToInt32(Decimal.Floor(lastEpisode)); i++)
+                        // 最初の話数が端数の場合はその次から、最後の話数が端数の場合はその前までが追加される
+                        for (int i = Decimal.ToInt32(Decimal.Ceiling(firstEpisode)); i <= Decimal.ToInt32(Decimal.Floor(lastEpisode)); i++)
 						{
 							dummyNums.Add(i);
 						}
@@ -593,7 +602,7 @@ namespace magicAnime
 								// 連番の場合、「nn～mm」にする
 								if ( isEntireNums )
 								{
-									episodeStr = firstEpisode + "～" + lastEpisode;
+									episodeStr = formatEpisodeNo(firstEpisode) + "～" + formatEpisodeNo(lastEpisode);
 								}
 							}
 
@@ -608,7 +617,7 @@ namespace magicAnime
 									{
 										episodeStrBuf.Append('、');
 									}
-									episodeStrBuf.Append(dummyNums[i]);
+									episodeStrBuf.Append(formatEpisodeNo(dummyNums[i]));
 								}
 
 								episodeStr = episodeStrBuf.ToString();
@@ -635,8 +644,17 @@ namespace magicAnime
 				}
 				else
 				{
-					syoboiRecord.number		= convertDecimalEpisodeNoToInt( decimal.Parse( (string)Cols[ 3 ] ) );	// 話番号
-					syoboiRecord.episode	= syoboiRecord.number.ToString(Settings.Default.storyNoFormat);			// 話番号文字列
+                    decimal storyNo         = decimal.Parse((string)Cols[3]);
+                    syoboiRecord.number		= convertDecimalEpisodeNoToInt(storyNo);    // 話番号
+                    if (storyNo != decimal.Zero)
+                    {
+                        syoboiRecord.episode = formatEpisodeNo(syoboiRecord.number);    // 話番号文字列
+                    }
+                    else
+                    {
+                        // 0話で話番号が振られているケースの場合
+                        syoboiRecord.episode = formatEpisodeNo(storyNo);                // 話番号文字列
+                    }
 
 					// HTMLエンコード文字をデコード
 					syoboiRecord.subtitle = HttpUtility.HtmlDecode( MakeNaked( (string)Cols[ 4 ] ) ); // サブタイトル
@@ -661,7 +679,7 @@ namespace magicAnime
 					recordList.Add(newRecord);
 				}
 
-				// mod. yossiepon_20150705 end
+				// mod yossiepon 20150705 end
 			}
 			catch(Exception)
 			{
@@ -813,7 +831,7 @@ namespace magicAnime
 		{
 			string nakedContext = context;
 
-			// mod. yossiepon_20150705 begin
+			// add yossiepon 20150705 begin
 			{
 				Regex regex = new Regex("<div class=\"peComment\">(?<Content>(.*?))</div>");
 				Match match = regex.Match(nakedContext);
@@ -835,7 +853,7 @@ namespace magicAnime
 					nakedContext = regex.Replace(nakedContext, content);
 				}
 			}
-			// mod. yossiepon_20150705 end
+			// add yossiepon 20150705 end
 
 			{
 				Regex regex = new Regex("<a(.*?)>(?<Content>(.*?))</a>");
@@ -863,8 +881,21 @@ namespace magicAnime
 				}
 			}
 
-			// mod. yossiepon_20150705
-			return nakedContext.Trim();
+            // mod yossiepon 20160924 begin
+            // // mod yossiepon 20150705 begin
+            // // return nakedContext;
+            // return nakedContext.Trim();
+            // // mod yossiepon 20150705 end
+
+            nakedContext = nakedContext.Trim();
+            // 特番回に含まれる先頭の「^」があれば除去する
+            if ((nakedContext.Length > 0) && (nakedContext[0] == '^'))
+            {
+                nakedContext = nakedContext.Substring(1);
+            }
+
+            return nakedContext;
+            // mod yossiepon 20160924 end
 		}
 		
 		//=========================================================================
@@ -945,57 +976,38 @@ namespace magicAnime
 		}
 
 
+        // add yossiepon 20160808 begin
 		//=========================================================================
 		///	<summary>
-		///		未対応話を最終話以降に連結する
+        ///		特番回に負の話数を符番する
 		///	</summary>
 		///	<remarks>
 		///	</remarks>
 		///	<history>2006/XX/XX	新規作成</history>
 		//=========================================================================
-		static public int Unnumbers( string	_tvstasion,	ref	List<SyoboiCalender.SyoboiRecord> _syoboi)
+        private void NumberSpecialEpisodes(ref List<SyoboiCalender.SyoboiRecord> syoboi)
 		{
-			// mod. yossiepon_20150705 begin
+            ArrayList tvStationList = ListupTvStation(syoboi);
 
-			int maxEpNo = int.MinValue;
-			int curSpEpNo = 1;
+            foreach (string tvStation in tvStationList) {
+
+                int curSpEpNo = -1;
 
 			Dictionary<string, int> specialEpNos = new Dictionary<string, int>();
 
-			// 放送分の最大話数を取得
-			for(int i = 0; i < _syoboi.Count; i++)
+                // 特番回に話数を振る
+                for (int i = 0; i < syoboi.Count; i++)
 			{
-				if (_syoboi[i].tvStation.Equals(_tvstasion))
+                    if (syoboi[i].tvStation.Equals(tvStation))
 				{
-					int epNo = _syoboi[i].number;
+                        int epNo = syoboi[i].number;
+                        string subtitle = syoboi[i].subtitle;
 
-					if(epNo != UNNUMBERED_EPISODE)
-					{
-						maxEpNo = Math.Max(maxEpNo, epNo);
-					}
-				}
-			}
-
-			// 最大話数が見つからない場合（すべて未付番の場合）
-			if(maxEpNo == int.MinValue)
-			{
-				// 特別編の話数を1から付番する
-				maxEpNo = 0;
-			}
-
-			// 特別編に話数を振る
-			for(int i = 0; i < _syoboi.Count; i++)
-			{
-				if (_syoboi[i].tvStation.Equals(_tvstasion))
-				{
-					int epNo = _syoboi[i].number;
-					string subtitle = _syoboi[i].subtitle;
-
-					// 話数が特別編（UNNUMBERED_EPISODE）なら
+                        // 話数が特番回（UNNUMBERED_EPISODE）なら
 					if (epNo == UNNUMBERED_EPISODE)
 					{
 						// 特別編の話数がディクショナリに存在したら	
-						if ( specialEpNos.ContainsKey(subtitle) )
+                            if (specialEpNos.ContainsKey(subtitle))
 						{
 							// 保存済みの話数を使用する
 							epNo = specialEpNos[subtitle];
@@ -1003,29 +1015,26 @@ namespace magicAnime
 						else
 						{
 							// 存在しなければ、新しい話数を発番して保存する
-							epNo = maxEpNo + curSpEpNo ++;
+                                epNo = curSpEpNo--;
 							specialEpNos.Add(subtitle, epNo);
 						}
 
 						// 話数文字列が振られていなければ「SPn」にする
-						if(_syoboi[i].episode.Length == 0)
+                            if (syoboi[i].episode.Length == 0)
 						{
-							_syoboi[i].episode = Settings.Default.unnumberedEpisodePrefix + (epNo - maxEpNo);
+                                syoboi[i].episode = Settings.Default.unnumberedEpisodePrefix + (-epNo);
 						}
 
-						// 特別編に話数をつける
-						_syoboi[i].number = epNo;
+                            // 特番回に話数をつける
+                            syoboi[i].number = epNo;
+                        }
 					}
 				}
 			}
-
-			// 付番した最大話数を返す
-			return maxEpNo + curSpEpNo - 1;
-
-			// mod. yossiepon_20150705 end
 		}
+        // add yossiepon 20160808 end
 		
-		// mod. yossiepon_20150705 begin
+        // add yossiepon 20150705 begin
 		//=========================================================================
 		/// <summary>
 		///		話番号を整数に変換する
@@ -1049,8 +1058,21 @@ namespace magicAnime
 			// 端数でなければ整数なので、そのまま変換して返す
 			return Decimal.ToInt32(no);
 		}
-		// mod. yossiepon_20150705 end
+        // add yossiepon 20150705 end
 
+        // add yossiepon 20160924 begin
+        //=========================================================================
+        /// <summary>
+        ///		話数に書式を適用する
+        /// </summary>
+        /// <param name="no">話番号（実数）</param>
+        /// <returns>書式を適用した話数文字列</returns>
+        //=========================================================================
+        private String formatEpisodeNo(decimal no)
+        {
+            return no.ToString(Settings.Default.storyNoFormat);
+        }
+        // add yossiepon 20160924 end
 		
 	}
 

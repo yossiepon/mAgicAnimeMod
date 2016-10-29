@@ -98,6 +98,9 @@
 			this.encodeGroupSeparator = new System.Windows.Forms.ToolStripSeparator();
 			this.encodeMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.storeMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.updateProgramPlanMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteInvalidEpisode = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
 			this.renameFileMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.unreadMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -745,12 +748,15 @@
             this.encodeGroupSeparator,
             this.encodeMenu,
             this.storeMenu,
+            this.toolStripSeparator9,
+            this.updateProgramPlanMenu,
+            this.deleteInvalidEpisode,
             this.toolStripMenuItem6,
             this.renameFileMenu,
             this.unreadMenu,
             this.RecordPropertyMenu});
 			this.contextMenuStrip.Name = "contextMenuStrip";
-			this.contextMenuStrip.Size = new System.Drawing.Size(225, 220);
+			this.contextMenuStrip.Size = new System.Drawing.Size(225, 292);
 			// 
 			// playMovieMenu
 			// 
@@ -812,6 +818,25 @@
 			this.storeMenu.Text = "最終保存先へ転送(&M)";
 			this.storeMenu.Click += new System.EventHandler(this.storeMenu_Click);
 			// 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(199, 6);
+            // 
+            // updateProgramPlanMenu
+            // 
+            this.updateProgramPlanMenu.Name = "updateProgramPlanMenu";
+            this.updateProgramPlanMenu.Size = new System.Drawing.Size(202, 22);
+            this.updateProgramPlanMenu.Text = "この番組のみデータ更新(&P)";
+            this.updateProgramPlanMenu.Click += new System.EventHandler(this.updateProgramPlanMenu_Click);
+            // 
+            // deleteInvalidEpisode
+            // 
+            this.deleteInvalidEpisode.Name = "deleteInvalidEpisode";
+            this.deleteInvalidEpisode.Size = new System.Drawing.Size(202, 22);
+            this.deleteInvalidEpisode.Text = "無効な最終回を削除(&D)";
+            this.deleteInvalidEpisode.Click += new System.EventHandler(this.deleteInvalidEpisode_Click);
+            // 
 			// toolStripMenuItem6
 			// 
 			this.toolStripMenuItem6.Name = "toolStripMenuItem6";
@@ -1173,7 +1198,7 @@
 			this.MainMenuStrip = this.menuStrip;
 			this.Name = "MainForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "mAgicAnime.NET Ver.7sh mod. yossiepon_20151025";
+            this.Text = "mAgicAnime.NET Ver.7sh mod. yossiepon_20160924";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
 			this.Load += new System.EventHandler(this.MainForm_Load);
@@ -1298,6 +1323,9 @@
 		private System.Windows.Forms.PictureBox datePictureBox;
 		private System.Windows.Forms.ToolStripMenuItem debugForceEmptyMenu;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem10;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+        private System.Windows.Forms.ToolStripMenuItem updateProgramPlanMenu;
+        private System.Windows.Forms.ToolStripMenuItem deleteInvalidEpisode;
 	}
 }
 

@@ -537,19 +537,13 @@ namespace magicAnime
 							syoboiTvStationComboBox.Items.Add("(指定なし)");
 							syoboiTvStationComboBox.SelectedIndex = 0;
 
-                            // 話数を表示
-                            int maxNumber = 0;
-
 							if( 0 < mZappingTid )
 							{
 								syoboiTitleTextBox.Text	= title;
 								titleTextBox.Text		= title;
 
 								foreach (string tvStation in tvStationList)
-                                {
 									syoboiTvStationComboBox.Items.Add(tvStation);
-                                    maxNumber = System.Math.Max(maxNumber, SyoboiCalender.Unnumbers(tvStation, ref recordList) );
-                                }
 
 								if (mSelectTvStation != null)
 								{
@@ -557,12 +551,18 @@ namespace magicAnime
 									mSelectTvStation = null;
 								}
 
+                                // 話数を表示
+                                int maxNumber = 0;
+
+                                foreach (SyoboiCalender.SyoboiRecord record in recordList)
+                                    maxNumber = System.Math.Max(maxNumber, record.number);
+
 								storyCountComboBox.Text = Convert.ToString(maxNumber);
 
 								if (mInputTitle != null)
 								{
 									titleTextBox.Text = mInputTitle;
-									mInputTitle=  null;
+                                    mInputTitle = null;
 								}
 							}
 						};
