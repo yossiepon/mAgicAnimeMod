@@ -805,6 +805,9 @@ namespace magicAnime
 			AnimeEpisode	episode		= null;
 			int				storyNumber	= 0;
 			Icon			icon		= null;
+            // add yossiepon 20160924 begin
+            Icon            icon2       = null;
+            // add yossiepon 20160924 end
 			string			text;
 			int				cellX,	cellY;
 			bool			border		= false;
@@ -1044,6 +1047,19 @@ namespace magicAnime
 								g.DrawIcon( icon, new Rectangle( newRect.X + 24, newRect.Y + 12, 16, 16 ) );
 						}
 
+                        // add yossiepon 20160924 begin
+                        // 放送プランデータ異常のセルに警告アイコンを表示する
+                        if (episode.PlanError)
+                            icon2 = mViewIcons.warnIcon;
+
+                        if (icon2 != null)
+                        {
+                            if (thumbnailModeButton.Checked)
+                                g.DrawIcon(icon2, new Rectangle(newRect.X + 18, newRect.Y + 4, 12, 12));
+                            else
+                                g.DrawIcon(icon2, new Rectangle(newRect.X + 6, newRect.Y + 12, 16, 16));
+                        }
+                        // add yossiepon 20160924 end
 					}
 
 					//----------------------
@@ -1654,6 +1670,10 @@ namespace magicAnime
 					bool	enableCancel	= true;
 					bool	enableUnread	= true;
 					bool	enableProp		= true;
+                    // add yossiepon 20160924 begin
+                    bool    enableUpdateProg    = true;
+                    bool    enableDeleteInv     = false;
+                    // add yossiepon 20160924 end
 
 					foreach(AnimeEpisode ep in episodes)
 					{
@@ -1675,6 +1695,27 @@ namespace magicAnime
 
 						enableProp		&= !isMulti;
 					}
+
+                    // add yossiepon 20160925 begin
+                    // 無効データ削除判定１：選択セルが１つ
+                    if (!isMulti)
+                    {
+                        AnimeEpisode ep = episodes[0];
+                        AnimeEpisode lastEp;
+
+                        AnimeProgram prog = ep.Parent;
+
+                        // 通常回の最後を取得
+                        lastEp = prog.Episodes[prog.Episodes.Count - 1];
+
+                        // 無効データ削除判定２：選択中のセルが放送プランデータ異常またはプランなし、かつ未予約、かつファイルなし、かつ最終回か？
+                        if ( (ep.PlanError || !ep.HasPlan) && !ep.IsReserved && !ep.HasFile && (ep == lastEp) )
+                        {
+                            // メニュー有効
+                            enableDeleteInv = true;
+                        }
+                    }
+                    // add yossiepon 20160925 end
 
 					//--------------------------------
 					// 拡張ツール項目
@@ -1727,6 +1768,10 @@ namespace magicAnime
 					cancelReserveMenu.Enabled	= enableCancel;
 					unreadMenu.Enabled			= enableUnread;
 					RecordPropertyMenu.Enabled	= enableProp;
+                    // add yossiepon 20160924 begin
+                    updateProgramPlanMenu.Enabled   = enableUpdateProg;
+                    deleteInvalidEpisode.Enabled    = enableDeleteInv;
+                    // add yossiepon 20160924 end
 
 					unreadMenu.Checked = !isMulti && episodes[0].Unread;
 					unreadMenu.Visible = !Settings.Default.disableUnread;
@@ -2973,6 +3018,56 @@ namespace magicAnime
 			}
 		}
 
+        // add yossiepon 20160924 begin
+        //=========================================================================
+        ///	<summary>
+        ///		番組データ更新メニュー項目のクリック処理
+        ///	</summary>
+        /// <remarks>
+        /// </remarks>
+        /// <history>2006/XX/XX 新規作成</history>
+        //========================================================================
+        private void updateProgramPlanMenu_Click(object sender, EventArgs e)
+        {
+            var episodes = GridSelectEpisodes;
+
+            if (1 != episodes.Count)
+                return;
+
+            AnimeEpisode ep = episodes[0];
+            AnimeProgram prog = ep.Parent;
+            List<AnimeProgram> animes = new List<AnimeProgram>();
+            animes.Add(prog);
+
+            AnimeServer.GetInstance().BeginUpdate(updateOption.Force, animes);
+            RefreshContent();
+        }
+
+        //=========================================================================
+        ///	<summary>
+        ///		無効最終回削除メニュー項目のクリック処理
+        ///	</summary>
+        /// <remarks>
+        /// </remarks>
+        /// <history>2006/XX/XX 新規作成</history>
+        //========================================================================
+        private void deleteInvalidEpisode_Click(object sender, EventArgs e)
+        {
+            var episodes = GridSelectEpisodes;
+
+            if (1 != episodes.Count)
+                return;
+
+            AnimeEpisode ep = episodes[0];
+            AnimeProgram prog = ep.Parent;
+
+            // 通常回の最後を削除
+            if (prog.StoryCount > 0)
+            {
+                prog.StoryCount = prog.StoryCount - 1;
+            }
+        }
+        // add yossiepon 20160924 end
 	}
 	
 }
