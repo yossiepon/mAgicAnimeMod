@@ -33,6 +33,10 @@ namespace Helpers
 			name = name.Replace( ':', '：' );
 			name = name.Replace( ':', '：' );
 			name = name.Replace( '\"', '”' );
+// mod. yossiepon_20151025 begin
+			name = name.Replace( '|', '｜' );
+			name = name.Replace( '%', '％' );
+// mod. yossiepon_20151025 end
 
 			// 無効な文字を削除する
 			name = name.TrimStart( Path.GetInvalidFileNameChars() );

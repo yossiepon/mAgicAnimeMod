@@ -1173,7 +1173,7 @@
 			this.MainMenuStrip = this.menuStrip;
 			this.Name = "MainForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "mAgicAnime.NET Ver.7sh mod. yossiepon_20150815";
+			this.Text = "mAgicAnime.NET Ver.7sh mod. yossiepon_20151025";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
 			this.Load += new System.EventHandler(this.MainForm_Load);
