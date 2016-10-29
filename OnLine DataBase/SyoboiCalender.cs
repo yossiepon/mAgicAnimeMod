@@ -635,8 +635,8 @@ namespace magicAnime
 				}
 				else
 				{
-					syoboiRecord.episode	= (string)Cols[3];														// 話番号文字列
 					syoboiRecord.number		= convertDecimalEpisodeNoToInt( decimal.Parse( (string)Cols[ 3 ] ) );	// 話番号
+					syoboiRecord.episode	= syoboiRecord.number.ToString(Settings.Default.storyNoFormat);			// 話番号文字列
 
 					// HTMLエンコード文字をデコード
 					syoboiRecord.subtitle = HttpUtility.HtmlDecode( MakeNaked( (string)Cols[ 4 ] ) ); // サブタイトル
@@ -1010,7 +1010,7 @@ namespace magicAnime
 						// 話数文字列が振られていなければ「SPn」にする
 						if(_syoboi[i].episode.Length == 0)
 						{
-							_syoboi[i].episode = "SP" + (epNo - maxEpNo);
+							_syoboi[i].episode = Settings.Default.unnumberedEpisodePrefix + (epNo - maxEpNo);
 						}
 
 						// 特別編に話数をつける

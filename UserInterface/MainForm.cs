@@ -1064,7 +1064,7 @@ namespace magicAnime
 					}
 
 					// mod. yossiepon_20150705
-					text = string.Format( "{0}", episode.StoryNoStr.Length > 0 ? episode.StoryNoStr : episode.StoryNumber.ToString("0") );
+					text = episode.StoryNoStr.Length > 0 ? episode.StoryNoStr : episode.StoryNumber.ToString("0");
 
 					g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;	// アンチエイリアス有効
 

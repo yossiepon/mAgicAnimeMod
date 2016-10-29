@@ -658,7 +658,7 @@
 			this.label64.Size = new System.Drawing.Size(468, 45);
 			this.label64.TabIndex = 3;
 			this.label64.Text = "放送時間が重複したとき、優先度が高い番組を録画(予約)します。\r\nチューナが足りない番組は最初から予約しません。(重複アイコンが表示されます)\r\n無効にすると、チ" +
-				"ューナ数に関係なく予約を試みます、";
+    "ューナ数に関係なく予約を試みます、";
 			// 
 			// label63
 			// 
@@ -849,7 +849,7 @@
 			this.label10.Size = new System.Drawing.Size(502, 47);
 			this.label10.TabIndex = 10;
 			this.label10.Text = "mAgicAnimeが録画ソフトに渡す識別ＩＤ(番組名に含む)を利用して検索します。\r\n録画ソフト側でID(番組名)がファイル名に反映されるよう設定しておく必要が" +
-				"あります。\r\n※ 複数の番組を同時に予約録画する場合はこちらを選択して下さい。";
+    "あります。\r\n※ 複数の番組を同時に予約録画する場合はこちらを選択して下さい。";
 			// 
 			// specifiedByNameRadioButton
 			// 
@@ -1013,7 +1013,7 @@
 			this.label46.Size = new System.Drawing.Size(405, 45);
 			this.label46.TabIndex = 2;
 			this.label46.Text = "複数のエンコード処理を同時に行います。\r\n(同時処理が安全かどうかはエンコードソフトやスクリプトに依存します)\r\n※ mAgicAnimeを再起動した後に有効とな" +
-				"ります。";
+    "ります。";
 			// 
 			// label45
 			// 
@@ -1471,7 +1471,9 @@
 			this.saveNameFormatComboBox.Items.AddRange(new object[] {
             "{0} 第{1:00}話 「{2}」",
             "{0}{1:0} - {2}",
-            "{0}_{1}_{2}_{3}_{4}_{5}"});
+            "{0} 第{6}話 「{2}」",
+            "{0}{6} - {2}",
+            "{0}_{1}_{2}_{3}_{4}_{5}_{6}"});
 			this.saveNameFormatComboBox.Location = new System.Drawing.Point(104, 52);
 			this.saveNameFormatComboBox.Name = "saveNameFormatComboBox";
 			this.saveNameFormatComboBox.Size = new System.Drawing.Size(294, 23);

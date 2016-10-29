@@ -302,6 +302,19 @@ namespace magicAnime
 
 			if ( sched == null ) return ChangeResult.Dontcare;
 
+			// mod. yossiepon_20150815 begin
+
+			// ファイル名によって録画ファイルを特定？
+			if ( Settings.Default.specifiedFile == IdentifyFileMethod.ByFileNameWithID )
+			{
+				title = string.Format(
+					Settings.Default.specifiedNameFormat	,
+					uniqueID								,
+					title									); // IDを含んだ録画タイトルにする
+			}
+
+			// mod. yossiepon_20150815 end
+
 			Logger.Output("(予約)時間変更操作 " + start.ToString() + "(" + title + ")" );
 
 			//----------------------------
@@ -345,14 +358,18 @@ namespace magicAnime
 				//-----------------------
 				try
 				{
-					// ファイル名によって録画ファイルを特定？
-					if ( Settings.Default.specifiedFile == IdentifyFileMethod.ByFileNameWithID )
-					{
-						title = string.Format(
-							Settings.Default.specifiedNameFormat	,
-							uniqueID								,
-							title									); // IDを含んだ録画タイトルにする
-					}
+					// mod. yossiepon_20150815 begin
+
+					//// ファイル名によって録画ファイルを特定？
+					//if ( Settings.Default.specifiedFile == IdentifyFileMethod.ByFileNameWithID )
+					//{
+					//	title = string.Format(
+					//		Settings.Default.specifiedNameFormat	,
+					//		uniqueID								,
+					//		title									); // IDを含んだ録画タイトルにする
+					//}
+
+					// mod. yossiepon_20150815 end
 
 					sched.MakeReservation(
 						title									,

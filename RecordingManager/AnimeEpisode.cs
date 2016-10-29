@@ -452,7 +452,7 @@ namespace magicAnime
 
 		public int StoryNumber		{ get { return mStoryNumber;  } }
 		// mod. yossiepon_20150705
-		public string StoryNoStr	{ get { return mStoryNoStr;  } }
+		public string StoryNoStr	{ get { return mStoryNoStr; } }
 
 		//=========================================================================
 		///	<summary>
@@ -1264,7 +1264,7 @@ namespace magicAnime
 					timeStr,
 					// mod. yossiepon_20150705 begin
 					station,
-					mStoryNoStr.Length > 0 ? mStoryNoStr : mStoryNumber.ToString("00"));
+					mStoryNoStr.Length > 0 ? mStoryNoStr : mStoryNumber.ToString(Settings.Default.storyNoFormat));
 					// mod. yossiepon_20150705 end
 			}
 			catch(Exception ex)
@@ -1314,7 +1314,7 @@ namespace magicAnime
 					timeStr,
 					// mod. yossiepon_20150705 begin
 					station,
-					mStoryNoStr.Length > 0 ? mStoryNoStr : mStoryNumber.ToString("00"));
+					mStoryNoStr.Length > 0 ? mStoryNoStr : mStoryNumber.ToString(Settings.Default.storyNoFormat));
 					// mod. yossiepon_20150705 end
 			}
 			catch(Exception ex)
@@ -1592,7 +1592,7 @@ namespace magicAnime
 			// mod. yossiepon_20150705 begin
 			if (mStoryNoStr.Length == 0)
 			{
-				mStoryNoStr = mStoryNumber.ToString();
+				mStoryNoStr = mStoryNumber.ToString(Settings.Default.storyNoFormat);
 			}
 			// mod. yossiepon_20150705 end
 		}

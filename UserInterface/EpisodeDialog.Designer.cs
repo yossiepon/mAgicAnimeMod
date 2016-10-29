@@ -32,6 +32,8 @@
 			this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.StoryNoTextBox = new System.Windows.Forms.TextBox();
+			this.label12 = new System.Windows.Forms.Label();
 			this.repeatNumberTextBox = new System.Windows.Forms.TextBox();
 			this.label9 = new System.Windows.Forms.Label();
 			this.lengthUpdown = new System.Windows.Forms.NumericUpDown();
@@ -106,6 +108,8 @@
 			// 
 			// tabPage1
 			// 
+			this.tabPage1.Controls.Add(this.StoryNoTextBox);
+			this.tabPage1.Controls.Add(this.label12);
 			this.tabPage1.Controls.Add(this.repeatNumberTextBox);
 			this.tabPage1.Controls.Add(this.label9);
 			this.tabPage1.Controls.Add(this.lengthUpdown);
@@ -131,11 +135,28 @@
 			this.tabPage1.Controls.Add(this.label1);
 			this.tabPage1.Location = new System.Drawing.Point(4, 25);
 			this.tabPage1.Name = "tabPage1";
-			this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
 			this.tabPage1.Size = new System.Drawing.Size(416, 381);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "プロパティ";
 			this.tabPage1.UseVisualStyleBackColor = true;
+			// 
+			// StoryNoTextBox
+			// 
+			this.StoryNoTextBox.Location = new System.Drawing.Point(288, 44);
+			this.StoryNoTextBox.Name = "StoryNoTextBox";
+			this.StoryNoTextBox.ReadOnly = true;
+			this.StoryNoTextBox.Size = new System.Drawing.Size(105, 22);
+			this.StoryNoTextBox.TabIndex = 24;
+			// 
+			// label12
+			// 
+			this.label12.AutoSize = true;
+			this.label12.Location = new System.Drawing.Point(200, 45);
+			this.label12.Name = "label12";
+			this.label12.Size = new System.Drawing.Size(85, 15);
+			this.label12.TabIndex = 23;
+			this.label12.Text = "話数文字列:";
 			// 
 			// repeatNumberTextBox
 			// 
@@ -394,7 +415,7 @@
 			this.tabPage2.Controls.Add(this.groupBox1);
 			this.tabPage2.Location = new System.Drawing.Point(4, 25);
 			this.tabPage2.Name = "tabPage2";
-			this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
 			this.tabPage2.Size = new System.Drawing.Size(416, 381);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "詳細";
@@ -607,5 +628,7 @@
 		private System.Windows.Forms.CheckBox timeChangedCheckBox;
 		private System.Windows.Forms.CheckBox thumbnailMakedCheckBox;
 		private System.Windows.Forms.CheckBox planErrorCheckbox;
+		private System.Windows.Forms.TextBox StoryNoTextBox;
+		private System.Windows.Forms.Label label12;
 	}
 }
