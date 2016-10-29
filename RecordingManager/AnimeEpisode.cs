@@ -96,39 +96,13 @@ namespace magicAnime
 		private bool			mIsBusy			= false;			// 処理中フラグ
 		public	string			mSubTitle		= "";				// サブタイトル
 		private bool			mIsDirty		= false;			// データ変更フラグ
-		private int				mStoryNumber	= 0;				// エピソード番号
+		private	int				mStoryNumber	= 0;				// エピソード番号
+		// mod. yossiepon_20150705
+		private	string			mStoryNoStr		= "";				// エピソード番号文字列
 		private int				mRepeatNumber	= -1;				// n回目の放送
 		private bool			mPlanError		= false;			// 放送プランデータ異常
 
 		private	Encoder			encoding		= null;				// エンコード処理中のエンコーダオブジェクト
-
-
-		//=========================================================================
-		///	<summary>
-		///		コンストラクタ
-		///	</summary>
-		/// <remarks>
-		/// </remarks>
-		/// <history>2006/XX/XX 新規作成</history>
-		//========================================================================
-		public AnimeEpisode(
-			AnimeProgram	animeProgram	,
-			State			initialState	,
-			string			inFilePath		,
-			DateTime		inDateTime		,
-			int				inStoryNumber	,
-			string			inSubTitle		)
-		{
-
-
-			this.mStoryNumber	= inStoryNumber;
-			this.mSubTitle		= inSubTitle;
-			this.mIsUnread		= true;
-			
-			this.mParent		= animeProgram;
-
-			this.Dirty			= true;
-		}
 
 		//=========================================================================
 		///	<summary>
@@ -477,6 +451,8 @@ namespace magicAnime
 		}
 
 		public int StoryNumber		{ get { return mStoryNumber;  } }
+		// mod. yossiepon_20150705
+		public string StoryNoStr	{ get { return mStoryNoStr;  } }
 
 		//=========================================================================
 		///	<summary>
@@ -667,11 +643,16 @@ namespace magicAnime
 					// 取得した放送プランで上書き
 					if( !mHasPlan
 					||	(mStartTime	!= syoboiRecord.onAirDateTime)
-					||	(mLength	!= syoboiRecord.length)			)
+					||	(mLength	!= syoboiRecord.length)
+					// mod. yossiepon_20150705
+					||	!mStoryNoStr.Equals(syoboiRecord.episode)	)
 					{
-						mHasPlan	= true;
+						// mod. yossiepon_20150705
+						mHasPlan	= syoboiRecord.length != 0;
 						mStartTime	= syoboiRecord.onAirDateTime;
 						mLength		= syoboiRecord.length;
+						// mod. yossiepon_20150705
+						mStoryNoStr	= syoboiRecord.episode;
 						Dirty		= true;
 					}
 
@@ -1281,7 +1262,10 @@ namespace magicAnime
 					subTitleName,
 					dateStr,
 					timeStr,
-					station);
+					// mod. yossiepon_20150705 begin
+					station,
+					mStoryNoStr.Length > 0 ? mStoryNoStr : mStoryNumber.ToString("00"));
+					// mod. yossiepon_20150705 end
 			}
 			catch(Exception ex)
 			{
@@ -1328,7 +1312,10 @@ namespace magicAnime
 					mSubTitle,
 					dateStr,
 					timeStr,
-					station);
+					// mod. yossiepon_20150705 begin
+					station,
+					mStoryNoStr.Length > 0 ? mStoryNoStr : mStoryNumber.ToString("00"));
+					// mod. yossiepon_20150705 end
 			}
 			catch(Exception ex)
 			{
@@ -1518,6 +1505,8 @@ namespace magicAnime
 			xw.WriteStartElement("Records");
 
 			xw.WriteElementString("StoryNumber"		, Convert.ToString(mStoryNumber));
+			// mod. yossiepon_20150705
+			xw.WriteElementString("StoryNoStr"		, mStoryNoStr);
 			xw.WriteElementString("FilePath"		, mFilePath);
 			xw.WriteElementString("DateTime"		, Convert.ToString(mStartTime.Ticks));
 			xw.WriteElementString("SubTitle"		, mSubTitle);
@@ -1555,6 +1544,9 @@ namespace magicAnime
 				{
 					if (xr.LocalName.Equals("StoryNumber"))
 						mStoryNumber = xr.ReadElementContentAsInt();
+					// mod. yossiepon_20150705
+					else if (xr.LocalName.Equals("StoryNoStr"))
+						mStoryNoStr = xr.ReadElementContentAsString();
 					else if (xr.LocalName.Equals("FilePath"))
 						mFilePath = xr.ReadElementContentAsString();
 					// Ver1.9.18以前からの以降
@@ -1597,6 +1589,12 @@ namespace magicAnime
 						break;
 			}
 
+			// mod. yossiepon_20150705 begin
+			if (mStoryNoStr.Length == 0)
+			{
+				mStoryNoStr = mStoryNumber.ToString();
+			}
+			// mod. yossiepon_20150705 end
 		}
 
 		// Ver1.9.18以前からのデータ移行用

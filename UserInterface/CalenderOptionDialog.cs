@@ -37,7 +37,7 @@ namespace magicAnime
 			Settings.Default.dayPast	= (int)dayPastUpdown.Value;
 			Settings.Default.dayFuture	= (int)dayFutureUpdown.Value;
 			Settings.Default.weekPast	= (int)weekPastUpdown.Value;
-			Settings.Default.weekFuture= (int)weekFutureUpdown.Value;
+			Settings.Default.weekFuture = (int)weekFutureUpdown.Value;
 
 			this.DialogResult = DialogResult.OK;
 

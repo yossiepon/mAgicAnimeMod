@@ -31,6 +31,9 @@ namespace magicAnime
 	//=========================================================================
 	class SyoboiCalender
 	{
+		// mod. yossiepon_20150705
+		public const int UNNUMBERED_EPISODE = int.MinValue;
+
 		DateTime?	prevUpdateListGetTime	= null;			// 前回の更新リスト取得時刻
 
 		// タイトルリストテーブル(http://cal.syoboi.jp/titlelist.php)
@@ -78,6 +81,8 @@ namespace magicAnime
 		//=========================================================================
 		public class SyoboiRecord : ICloneable
 		{
+			// mod. yossiepon_20150705
+			public string episode;
 			public int number;
 			public string subtitle;
 			public string tvStation;
@@ -89,6 +94,21 @@ namespace magicAnime
 			{
 				return this.MemberwiseClone();
 			}
+
+			// mod. yossiepon_20150705 begin
+			//=========================================================================
+			///	<summary>
+			///		フォーマットされた番組エピソード文字列を返す
+			///	</summary>
+			/// <remarks>
+			/// </remarks>
+			/// <history>2006/XX/XX 新規作成</history>
+			//=========================================================================
+			public override string ToString()
+			{
+				return tvStation + "-No." + number + "(" + episode + ")「" + subtitle + "」(" + length + " min.)/" + onAirDateTime;
+			}
+			// mod. yossiepon_20150705 end
 		}
 
 		public class SyoboiUpdate
@@ -383,7 +403,8 @@ namespace magicAnime
 					Match	matchTitle	= parseTitle.Match(line);
 
 					if( matchTitle.Success )
-						title = matchTitle.Groups["Title"].Value;
+						// mod. yossiepon_20150705
+						title = HttpUtility.HtmlDecode( matchTitle.Groups["Title"].Value );
 				}
 
 				allLine += line;
@@ -449,6 +470,10 @@ namespace magicAnime
 				ArrayList Cols;
 				string temp;
 
+				// mod. yossiepon_20150705 begin
+
+				List<decimal>	dummyNums		= new List<decimal>();
+
 				//---------------------------------------------------------------------------------
 				// チャンネル	開始日時	分	回数	サブタイトル/コメント	フラグ	更新日	-
 				//---------------------------------------------------------------------------------
@@ -456,127 +481,187 @@ namespace magicAnime
 				
 				syoboiRecord = new SyoboiRecord();
 
-				syoboiRecord.tvStation = (string)Cols[0]; // TV局名
+				syoboiRecord.tvStation		= (string)Cols[0];						// TV局名
+				syoboiRecord.onAirDateTime	= ConvertToDateTime((string)Cols[1]);	// 開始日時
+				syoboiRecord.length			= int.Parse( (string)Cols[ 2 ] );		// 尺
 
+				// 回数が無い場合
 				if ( Cols[ 3 ].Equals( "" ) )
 				{
 					//-----------------------------
 					// 複数話連続放送の対策
 					//-----------------------------
 
-					// #nn～#mm
-					Regex parser	= new Regex( "^#(?<FirstEpisode>[0-9]+)～#(?<LastEpisode>[0-9]+)" );
+					// サブタイトルから#nn～#mmを抽出
+					Regex parser	= new Regex( "^#(?<FirstEpisode>[0-9.]+)～#(?<LastEpisode>[0-9.]+)" );
 					Match match		= parser.Match( (string)Cols[ 4 ] );
 
+					// マッチした場合
 					if (match.Success)
 					{
-						int firstEpisode, lastEpisode;
-						int episodeCount = 1;
-						DateTime onairDateTime;
+						// 最初と最後が端数だった場合、それぞれ１話増えるようにfloorとceilingにしておく
+						// ※中間に端数が含まれる場合、放送データからだけでは判別がつかず極めて稀なパターンと思われるので考慮しない
+						decimal firstEpisode = Decimal.Parse(match.Groups["FirstEpisode"].Value);
+						decimal lastEpisode	= Decimal.Parse(match.Groups["LastEpisode"].Value);
 
-						firstEpisode = int.Parse(match.Groups["FirstEpisode"].Value);
-						lastEpisode = int.Parse(match.Groups["LastEpisode"].Value);
+						// 連続話数は分割せずにまとめて録画する
+						syoboiRecord.episode = firstEpisode + "～" + lastEpisode;			// 話番号文字列（マッチ結果全体をそのまま入れる）
+						syoboiRecord.number	= convertDecimalEpisodeNoToInt(firstEpisode);	// 話番号（１つ目）
 
-						syoboiRecord.number = firstEpisode;
-						episodeCount = (lastEpisode - firstEpisode + 1); // 連続放送数
+						// HTMLエンコード文字をデコード
+						syoboiRecord.subtitle =	HttpUtility.HtmlDecode(MakeNaked((string)Cols[4]));	// サブタイトル
 
-						// 尺=全放送時間/話数
-						syoboiRecord.length = int.Parse((string)Cols[2]) / episodeCount;
-
-						onairDateTime = ConvertToDateTime( (string)Cols[1] );
-
-						//-----------------------------
-						// 連続話数分、データを追加
-						//-----------------------------
-						for (int i = firstEpisode; i <= lastEpisode; ++i)
+						// 最初の話数が端数だった場合
+						if ( convertDecimalEpisodeNoToInt(firstEpisode) == UNNUMBERED_EPISODE )
 						{
-							SyoboiRecord newRecord;
+							// 端数のままダミー話数リストに追加する
+							dummyNums.Add(firstEpisode);
+						}
 
-							newRecord = (SyoboiRecord)syoboiRecord.Clone();
+						// 最初の話数から最後の話数までをダミー話数リストに追加する
+						// 最後の話数が端数の場合は、その前までが追加される
+						for(int i = Decimal.ToInt32(Decimal.Ceiling(firstEpisode)); i <= Decimal.ToInt32(Decimal.Floor(lastEpisode)); i++)
+						{
+							dummyNums.Add(i);
+						}
 
-							newRecord.number = i;		// 話番号
-							newRecord.subtitle = "";	// サブタイトル
-
-							// 開始時刻
-							newRecord.onAirDateTime = onairDateTime.AddMinutes(newRecord.length * (i - firstEpisode));
-
-							recordList.Add(newRecord);
+						// 最後の話数が端数だった場合
+						if ( convertDecimalEpisodeNoToInt(lastEpisode) == UNNUMBERED_EPISODE )
+						{
+							// 端数のままダミー話数リストに追加する
+							dummyNums.Add(lastEpisode);
 						}
 					}
 					else
 					{
 						//------------------------------------------------
-						// 2話連続「#1、#2」
+						// 複数話連続「#1(「～」)(、#2(「～」))...」
+						// ※1話のみで回数が無い場合もここで処理される(#10.5等)
 						//------------------------------------------------
-						DateTime		onairDateTime;
-						string			dateTag;
-						List<int>		episodeNums		= new List<int>();
+						//List<string>	episodeStrs		= new List<string>();
 						List<string>	subTitles		= new List<string>();
-						
-						// 連続放送時間
-						int				totalLen		= int.Parse((string)Cols[2]);
 
-						onairDateTime = ConvertToDateTime( (string)Cols[1] );
-
-						// 前後編の場合、サブタイトルが一緒になっている
-						// #nn「サブタイトル」、#mm「サブタイトル」...
-						parser = new Regex("#(?<EpisodeNumber>[0-9]+)((｢|「)(?<Subtitle>.*?)(｣|」))?(、)?");
+						// サブタイトルから#nn「サブタイトル」、#mm「サブタイトル」...を抽出
+						// ※「」をつけずにサブタイトルが入る場合があるので、その場合は繰り返しを考慮せずにすべて抜き出す
+						parser = new Regex("#(?<EpisodeNumber>[0-9.]+)( (?<Subtitle>.+)|(｢|「)(?<Subtitle>.*?)(｣|」))?(、)?");
 						match	= parser.Match((string)Cols[4]);
 
 						// エピソード番号とタイトルを全て切り出す
 						while(match.Success)
 						{
-							int		episodeNum	= int.Parse(match.Groups["EpisodeNumber"].Value);
-							string	subTitle	= (string)match.Groups["Subtitle"].Value;
+							string	episodeStr	= match.Groups["EpisodeNumber"].Value;
+							decimal	episodeNum	= Decimal.Parse(episodeStr);
+							string	subTitle	= HttpUtility.HtmlDecode( (string)match.Groups["Subtitle"].Value );
 
-							episodeNums.Add( episodeNum );
+							//episodeStrs.Add( episodeStr	);
+							dummyNums.Add( episodeNum );
 							subTitles.Add( subTitle );
 
-							match = match.NextMatch();
+							match =	match.NextMatch();
 						}
 
-						// 前後編の場合のサブタイトル処理
-						if( subTitles.Count == 2 )
+						// 抽出できなかった場合
+						if (dummyNums.Count == 0)
 						{
-							if( string.IsNullOrEmpty( subTitles[0] ) &&
-								!string.IsNullOrEmpty( subTitles[1] ) )
+							syoboiRecord.episode =	"";					// 話番号文字列
+							syoboiRecord.number	=	UNNUMBERED_EPISODE;	// 話番号 = 特別編（UNNUMBERED_EPISODE）
+
+							// HTMLエンコード文字をデコード
+							syoboiRecord.subtitle =	HttpUtility.HtmlDecode(MakeNaked((string)Cols[4]));	// サブタイトル
+						}
+						else
+						{
+							int firstEpisode	=	convertDecimalEpisodeNoToInt( dummyNums[0] );
+							string episodeStr	= "";
+
+							// 話番号が複数存在する場合
+							if (dummyNums.Count > 1)
 							{
-								subTitles[0] = subTitles[1];
+								int lastEpisode =	convertDecimalEpisodeNoToInt( dummyNums[dummyNums.Count -1] );
+								Boolean isEntireNums = true;
+
+								// 区切り内の番号が連番になっているかチェックする
+								for(int i = 1; i < dummyNums.Count; i++) {
+
+									if( dummyNums[i] != firstEpisode + i ) {
+
+										isEntireNums = false;
+										break;									
+									}								
+								}
+
+								// 連番の場合、「nn～mm」にする
+								if ( isEntireNums )
+								{
+									episodeStr = firstEpisode + "～" + lastEpisode;
+								}
 							}
-						}
 
-						// 各エピソードを追加
-						for( int i = 0 ; i < episodeNums.Count ; ++i )
-						{
-							int		episodeNum	= episodeNums[i];
-							string	subTitle	= subTitles[i];
+							// 連番でない場合、「nn(、mm、...)」にする
+							if( episodeStr.Length == 0 )
+							{
+								StringBuilder episodeStrBuf = new StringBuilder();
 
-							SyoboiRecord newRecord = (SyoboiRecord)syoboiRecord.Clone();
+								for(int i = 0; i < dummyNums.Count; i++) {
 
-							// 尺=全放送時間/話数
-							newRecord.length	= totalLen / episodeNums.Count;
-							newRecord.number	= episodeNum;	// エピソード番号
-							newRecord.subtitle	= subTitle;		// サブタイトル
+									if( episodeStrBuf.Length > 0 )
+									{
+										episodeStrBuf.Append('、');
+									}
+									episodeStrBuf.Append(dummyNums[i]);
+								}
 
-							// 開始時刻
-							newRecord.onAirDateTime = onairDateTime.AddMinutes(newRecord.length * i);
+								episodeStr = episodeStrBuf.ToString();
+							}
 
-							recordList.Add(newRecord);
+							// サブタイトルを「～(｜～｜…)」にする
+							StringBuilder subtitleBuf = new StringBuilder();
+
+							for(int i = 0; i < subTitles.Count; i++) {
+
+								if( subtitleBuf.Length > 0 )
+								{
+									subtitleBuf.Append('｜');
+								}
+								subtitleBuf.Append(subTitles[i]);
+							}
+
+							syoboiRecord.episode =	episodeStr;					// 話番号文字列
+							syoboiRecord.number	=	firstEpisode;				// 話番号
+
+							syoboiRecord.subtitle = subtitleBuf.ToString();		// サブタイトル
 						}
 					}
 				}
 				else
 				{
-					syoboiRecord.length = int.Parse( (string)Cols[ 2 ] ); // 尺
-					syoboiRecord.number = int.Parse( (string)Cols[ 3 ] ); // 話番号
+					syoboiRecord.episode	= (string)Cols[3];														// 話番号文字列
+					syoboiRecord.number		= convertDecimalEpisodeNoToInt( decimal.Parse( (string)Cols[ 3 ] ) );	// 話番号
 
 					// HTMLエンコード文字をデコード
 					syoboiRecord.subtitle = HttpUtility.HtmlDecode( MakeNaked( (string)Cols[ 4 ] ) ); // サブタイトル
-					syoboiRecord.onAirDateTime = ConvertToDateTime( (string)Cols[1] );	// 開始日時
 
-					recordList.Add( syoboiRecord );
 				}
 
+				recordList.Add( syoboiRecord );
+
+				//-----------------------------
+				// 連続話数の残り分、データを追加
+				//-----------------------------
+				for	(int i = 1; i < dummyNums.Count; ++i)
+				{
+					SyoboiRecord newRecord;
+
+					newRecord =	(SyoboiRecord)syoboiRecord.Clone();
+
+					newRecord.length = 0;											// 尺を0にして無効扱いにする
+					newRecord.number = convertDecimalEpisodeNoToInt(dummyNums[i]);	// 話番号
+					//newRecord.subtitle = "";										// サブタイトルをクリアする
+
+					recordList.Add(newRecord);
+				}
+
+				// mod. yossiepon_20150705 end
 			}
 			catch(Exception)
 			{
@@ -728,6 +813,30 @@ namespace magicAnime
 		{
 			string nakedContext = context;
 
+			// mod. yossiepon_20150705 begin
+			{
+				Regex regex = new Regex("<div class=\"peComment\">(?<Content>(.*?))</div>");
+				Match match = regex.Match(nakedContext);
+
+				if (match.Groups["Content"].Success)
+				{
+					string content = " " + match.Groups["Content"].Value;
+
+					{
+						Regex regex2 = new Regex("<a(.*?)>(?<Content>(.*?))</a>");
+						Match match2 = regex2.Match(content);
+
+						if (match2.Groups["Content"].Success)
+						{
+							content = regex2.Replace(content, "");
+						}
+					}
+
+					nakedContext = regex.Replace(nakedContext, content);
+				}
+			}
+			// mod. yossiepon_20150705 end
+
 			{
 				Regex regex = new Regex("<a(.*?)>(?<Content>(.*?))</a>");
 				Match match = regex.Match(nakedContext);
@@ -754,7 +863,8 @@ namespace magicAnime
 				}
 			}
 
-			return nakedContext;
+			// mod. yossiepon_20150705
+			return nakedContext.Trim();
 		}
 		
 		//=========================================================================
@@ -833,6 +943,114 @@ namespace magicAnime
 			remain = line;
 			return "";
 		}
+
+
+		//=========================================================================
+		///	<summary>
+		///		未対応話を最終話以降に連結する
+		///	</summary>
+		///	<remarks>
+		///	</remarks>
+		///	<history>2006/XX/XX	新規作成</history>
+		//=========================================================================
+		static public int Unnumbers( string	_tvstasion,	ref	List<SyoboiCalender.SyoboiRecord> _syoboi)
+		{
+			// mod. yossiepon_20150705 begin
+
+			int maxEpNo = int.MinValue;
+			int curSpEpNo = 1;
+
+			Dictionary<string, int> specialEpNos = new Dictionary<string, int>();
+
+			// 放送分の最大話数を取得
+			for(int i = 0; i < _syoboi.Count; i++)
+			{
+				if (_syoboi[i].tvStation.Equals(_tvstasion))
+				{
+					int epNo = _syoboi[i].number;
+
+					if(epNo != UNNUMBERED_EPISODE)
+					{
+						maxEpNo = Math.Max(maxEpNo, epNo);
+					}
+				}
+			}
+
+			// 最大話数が見つからない場合（すべて未付番の場合）
+			if(maxEpNo == int.MinValue)
+			{
+				// 特別編の話数を1から付番する
+				maxEpNo = 0;
+			}
+
+			// 特別編に話数を振る
+			for(int i = 0; i < _syoboi.Count; i++)
+			{
+				if (_syoboi[i].tvStation.Equals(_tvstasion))
+				{
+					int epNo = _syoboi[i].number;
+					string subtitle = _syoboi[i].subtitle;
+
+					// 話数が特別編（UNNUMBERED_EPISODE）なら
+					if (epNo == UNNUMBERED_EPISODE)
+					{
+						// 特別編の話数がディクショナリに存在したら	
+						if ( specialEpNos.ContainsKey(subtitle) )
+						{
+							// 保存済みの話数を使用する
+							epNo = specialEpNos[subtitle];
+						}
+						else
+						{
+							// 存在しなければ、新しい話数を発番して保存する
+							epNo = maxEpNo + curSpEpNo ++;
+							specialEpNos.Add(subtitle, epNo);
+						}
+
+						// 話数文字列が振られていなければ「SPn」にする
+						if(_syoboi[i].episode.Length == 0)
+						{
+							_syoboi[i].episode = "SP" + (epNo - maxEpNo);
+						}
+
+						// 特別編に話数をつける
+						_syoboi[i].number = epNo;
+					}
+				}
+			}
+
+			// 付番した最大話数を返す
+			return maxEpNo + curSpEpNo - 1;
+
+			// mod. yossiepon_20150705 end
+		}
+		
+		// mod. yossiepon_20150705 begin
+		//=========================================================================
+		/// <summary>
+		///		話番号を整数に変換する
+		/// </summary>
+		/// <param name="no">話番号（実数）</param>
+		/// <returns>1以上の整数の場合そのまま、0または実数の場合は UNNUMBERED_EPISODE にする</returns>
+		//=========================================================================
+		private int convertDecimalEpisodeNoToInt(decimal no)
+		{
+			// 端数回は特別編（UNNUMBERED_EPISODE）として処理
+			if( no.CompareTo(Decimal.Round(no)) != 0 )
+			{
+				return UNNUMBERED_EPISODE;
+			}
+			// 0話は特別編（UNNUMBERED_EPISODE）として処理
+			else if( no.Equals(Decimal.Zero) )
+			{
+				return UNNUMBERED_EPISODE;
+			}
+
+			// 端数でなければ整数なので、そのまま変換して返す
+			return Decimal.ToInt32(no);
+		}
+		// mod. yossiepon_20150705 end
+
 		
 	}
 

@@ -573,6 +573,7 @@ namespace magicAnime
 			if( Episodes.Count == 0 )
 				return NextEpisode.NextUnknown;
 
+            /* しょぼカルは、すべて登録されていな場合がある
 			AnimeEpisode lastEpisode = Episodes[Episodes.Count-1];
 
 			if ( lastEpisode.HasPlan &&
@@ -581,6 +582,7 @@ namespace magicAnime
 				earlyOnAir	= null;
 				return NextEpisode.EndProgram;
 			}
+            */
 			
 			//
 			// dateTime以降、リストの中で最も早く放送するEpisodeを見つける
@@ -606,7 +608,7 @@ namespace magicAnime
 			}
 
 			if (earlyOnAir==null)
-				return NextEpisode.NextUnknown;
+                return NextEpisode.EndProgram;
 
 			return NextEpisode.NextDecided;
 		}
@@ -667,6 +669,16 @@ namespace magicAnime
 
 				if (StoryCount < maxNumber)
 					StoryCount = maxNumber;	// 話数が増えた場合だけ増やす
+
+                //------------------------------------
+                // 話数未設定項目の確認
+                //------------------------------------
+                foreach (AnimeEpisode episode in Episodes)
+                {
+                    maxNumber = SyoboiCalender.Unnumbers(episode.Parent.syoboiTvStation, ref syoboiList);
+                }
+                if (StoryCount < maxNumber)
+                    StoryCount = maxNumber;	// 話数が増えた場合だけ増やす
 
 				//-------------------------------
 				// エピソードごと放送データ更新

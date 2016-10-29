@@ -537,25 +537,25 @@ namespace magicAnime
 							syoboiTvStationComboBox.Items.Add("(指定なし)");
 							syoboiTvStationComboBox.SelectedIndex = 0;
 
+                            // 話数を表示
+                            int maxNumber = 0;
+
 							if( 0 < mZappingTid )
 							{
 								syoboiTitleTextBox.Text	= title;
 								titleTextBox.Text		= title;
 
 								foreach (string tvStation in tvStationList)
+                                {
 									syoboiTvStationComboBox.Items.Add(tvStation);
+                                    maxNumber = System.Math.Max(maxNumber, SyoboiCalender.Unnumbers(tvStation, ref recordList) );
+                                }
 
 								if (mSelectTvStation != null)
 								{
 									syoboiTvStationComboBox.Text = mSelectTvStation;
 									mSelectTvStation = null;
 								}
-
-								// 話数を表示
-								int maxNumber = 0;
-
-								foreach (SyoboiCalender.SyoboiRecord record in recordList)
-									maxNumber = System.Math.Max(maxNumber, record.number);
 
 								storyCountComboBox.Text = Convert.ToString(maxNumber);
 
@@ -659,6 +659,7 @@ namespace magicAnime
 
 			dlg.ShowDialog();
 		}
+
 		//=========================================================================
 		///	<summary>
 		///		コントロールの状態更新
@@ -680,6 +681,27 @@ namespace magicAnime
 			recordTvStationTextBox.Enabled	= (mLinkOnline && mCheckedRecordTvStation) || !mLinkOnline;
 			recordTvStationCheckBox.Enabled	= mLinkOnline;
 		}
+
+        //=========================================================================
+        ///	<summary>
+        ///		しょぼカルを開く
+        ///	</summary>
+        /// <remarks>
+        /// </remarks>
+        /// <history>2012/03/19 新規作成</history>
+        //=========================================================================
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            int tid  = (int)syoboiTidUpdown.Value;
+            if (tid != 0)
+            {
+                System.Diagnostics.Process.Start("http://cal.syoboi.jp/tid/" + tid.ToString());
+            }
+            else
+            {
+                System.Diagnostics.Process.Start("http://cal.syoboi.jp/");
+            }
+        }
 
 	}
 

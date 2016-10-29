@@ -1063,7 +1063,8 @@ namespace magicAnime
 						ty = newRect.Y;
 					}
 
-					text = string.Format( "{0:0}", episode.StoryNumber );
+					// mod. yossiepon_20150705
+					text = string.Format( "{0}", episode.StoryNoStr.Length > 0 ? episode.StoryNoStr : episode.StoryNumber.ToString("0") );
 
 					g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;	// アンチエイリアス有効
 
@@ -1564,8 +1565,10 @@ namespace magicAnime
 
 				titleLabel.Text			= prog.title +
 										  string.Format(
-												" 第{0:0}話 {1:0}"		,
-												episode.StoryNumber		,
+												// mod. yossiepon_20150705 begin
+												" 第{0}話 {1}"		,
+												episode.StoryNoStr.Length > 0 ? episode.StoryNoStr : episode.StoryNumber.ToString("0"),
+												// mod. yossiepon_20150705 end
 												episode.mSubTitle		);
 
 				filePathLabel.Text		= episode.FilePath;
@@ -2972,6 +2975,22 @@ namespace magicAnime
 				return progs;
 			}
 		}
+
+        //=========================================================================
+        ///	<summary>
+        ///		リサイズの限定
+        ///	</summary>
+        /// <remarks>
+        /// </remarks>
+        /// <history>2012/02/23 新規作成</history>
+        //========================================================================
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized) { return; }
+            if (this.Width < 758) { this.Width = 758; }
+            if (this.Height < 310) { this.Height = 310; }
+        }
+
 
 	}
 	

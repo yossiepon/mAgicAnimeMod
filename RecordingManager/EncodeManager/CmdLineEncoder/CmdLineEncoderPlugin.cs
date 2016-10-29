@@ -331,6 +331,9 @@ namespace magicAnime.RecordingManager.EncodeManager.CmdLineEncoder
 
 			process.WaitForExit();
 
+            if (process.ExitCode != 0)
+                throw new Exception("エンコードに失敗した (終了コード: " + process.ExitCode + ")"); 
+
 			if (abortEncode)
 				throw new AbortException();
 
