@@ -100,7 +100,9 @@
 			this.storeMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.updateProgramPlanMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteInvalidEpisode = new System.Windows.Forms.ToolStripMenuItem();
+			this.enforceRecordedStatusMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.unfixedInvalidEpisodeMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.deleteInvalidEpisodeMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
 			this.renameFileMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.unreadMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -750,20 +752,22 @@
             this.storeMenu,
             this.toolStripSeparator9,
             this.updateProgramPlanMenu,
-            this.deleteInvalidEpisode,
+            this.enforceRecordedStatusMenu,
+            this.unfixedInvalidEpisodeMenu,
+            this.deleteInvalidEpisodeMenu,
             this.toolStripMenuItem6,
             this.renameFileMenu,
             this.unreadMenu,
             this.RecordPropertyMenu});
 			this.contextMenuStrip.Name = "contextMenuStrip";
-			this.contextMenuStrip.Size = new System.Drawing.Size(219, 292);
+			this.contextMenuStrip.Size = new System.Drawing.Size(221, 314);
 			// 
 			// playMovieMenu
 			// 
 			this.playMovieMenu.Image = ((System.Drawing.Image)(resources.GetObject("playMovieMenu.Image")));
 			this.playMovieMenu.ImageTransparentColor = System.Drawing.Color.Fuchsia;
 			this.playMovieMenu.Name = "playMovieMenu";
-			this.playMovieMenu.Size = new System.Drawing.Size(218, 22);
+			this.playMovieMenu.Size = new System.Drawing.Size(220, 22);
 			this.playMovieMenu.Text = "再生(&P)";
 			this.playMovieMenu.Click += new System.EventHandler(this.playMovieMenu_Click);
 			// 
@@ -772,40 +776,40 @@
 			this.reserveMenu.Image = ((System.Drawing.Image)(resources.GetObject("reserveMenu.Image")));
 			this.reserveMenu.ImageTransparentColor = System.Drawing.Color.Fuchsia;
 			this.reserveMenu.Name = "reserveMenu";
-			this.reserveMenu.Size = new System.Drawing.Size(218, 22);
+			this.reserveMenu.Size = new System.Drawing.Size(220, 22);
 			this.reserveMenu.Text = "録画予約(&R)";
 			this.reserveMenu.Click += new System.EventHandler(this.reserveMenu_Click);
 			// 
 			// cancelReserveMenu
 			// 
 			this.cancelReserveMenu.Name = "cancelReserveMenu";
-			this.cancelReserveMenu.Size = new System.Drawing.Size(218, 22);
+			this.cancelReserveMenu.Size = new System.Drawing.Size(220, 22);
 			this.cancelReserveMenu.Text = "予約キャンセル";
 			this.cancelReserveMenu.Click += new System.EventHandler(this.cancelReserveMenu_Click);
 			// 
 			// extToolsGroupSeparator
 			// 
 			this.extToolsGroupSeparator.Name = "extToolsGroupSeparator";
-			this.extToolsGroupSeparator.Size = new System.Drawing.Size(215, 6);
+			this.extToolsGroupSeparator.Size = new System.Drawing.Size(217, 6);
 			this.extToolsGroupSeparator.Visible = false;
 			// 
 			// 拡張ツールToolStripMenuItem
 			// 
 			this.拡張ツールToolStripMenuItem.Enabled = false;
 			this.拡張ツールToolStripMenuItem.Name = "拡張ツールToolStripMenuItem";
-			this.拡張ツールToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
+			this.拡張ツールToolStripMenuItem.Size = new System.Drawing.Size(220, 22);
 			this.拡張ツールToolStripMenuItem.Text = "拡張ツール";
 			this.拡張ツールToolStripMenuItem.Visible = false;
 			// 
 			// encodeGroupSeparator
 			// 
 			this.encodeGroupSeparator.Name = "encodeGroupSeparator";
-			this.encodeGroupSeparator.Size = new System.Drawing.Size(215, 6);
+			this.encodeGroupSeparator.Size = new System.Drawing.Size(217, 6);
 			// 
 			// encodeMenu
 			// 
 			this.encodeMenu.Name = "encodeMenu";
-			this.encodeMenu.Size = new System.Drawing.Size(218, 22);
+			this.encodeMenu.Size = new System.Drawing.Size(220, 22);
 			this.encodeMenu.Text = "エンコードキューに入れる(&E)";
 			this.encodeMenu.Click += new System.EventHandler(this.encodeMenu_Click);
 			// 
@@ -814,38 +818,52 @@
 			this.storeMenu.Image = global::magicAnime.Properties.Resources.SaveAll;
 			this.storeMenu.ImageTransparentColor = System.Drawing.Color.Fuchsia;
 			this.storeMenu.Name = "storeMenu";
-			this.storeMenu.Size = new System.Drawing.Size(218, 22);
+			this.storeMenu.Size = new System.Drawing.Size(220, 22);
 			this.storeMenu.Text = "最終保存先へ転送(&M)";
 			this.storeMenu.Click += new System.EventHandler(this.storeMenu_Click);
 			// 
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(199, 6);
+			this.toolStripSeparator9.Size = new System.Drawing.Size(217, 6);
             // 
             // updateProgramPlanMenu
             // 
             this.updateProgramPlanMenu.Name = "updateProgramPlanMenu";
-            this.updateProgramPlanMenu.Size = new System.Drawing.Size(202, 22);
+			this.updateProgramPlanMenu.Size = new System.Drawing.Size(220, 22);
             this.updateProgramPlanMenu.Text = "この番組のみデータ更新(&P)";
             this.updateProgramPlanMenu.Click += new System.EventHandler(this.updateProgramPlanMenu_Click);
             // 
-            // deleteInvalidEpisode
+			// enforceRecordedStatusMenu
             // 
-            this.deleteInvalidEpisode.Name = "deleteInvalidEpisode";
-            this.deleteInvalidEpisode.Size = new System.Drawing.Size(202, 22);
-            this.deleteInvalidEpisode.Text = "無効な最終回を削除(&D)";
-            this.deleteInvalidEpisode.Click += new System.EventHandler(this.deleteInvalidEpisode_Click);
+			this.enforceRecordedStatusMenu.Name = "enforceRecordedStatusMenu";
+			this.enforceRecordedStatusMenu.Size = new System.Drawing.Size(220, 22);
+			this.enforceRecordedStatusMenu.Text = "強制的に録画済み状態にする";
+			this.enforceRecordedStatusMenu.Click += new System.EventHandler(this.enforceRecordedStatusMenu_Click);
+			// 
+			// unfixedInvalidEpisodeMenu
+			// 
+			this.unfixedInvalidEpisodeMenu.Name = "unfixedInvalidEpisodeMenu";
+			this.unfixedInvalidEpisodeMenu.Size = new System.Drawing.Size(220, 22);
+			this.unfixedInvalidEpisodeMenu.Text = "無効な途中回を未確定に戻す";
+			this.unfixedInvalidEpisodeMenu.Click += new System.EventHandler(this.unfixedInvalidEpisodeMenu_Click);
+			// 
+			// deleteInvalidEpisodeMenu
+			// 
+			this.deleteInvalidEpisodeMenu.Name = "deleteInvalidEpisodeMenu";
+			this.deleteInvalidEpisodeMenu.Size = new System.Drawing.Size(220, 22);
+			this.deleteInvalidEpisodeMenu.Text = "無効な最終回を削除(&D)";
+			this.deleteInvalidEpisodeMenu.Click += new System.EventHandler(this.deleteInvalidEpisode_Click);
             // 
 			// toolStripMenuItem6
 			// 
 			this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-			this.toolStripMenuItem6.Size = new System.Drawing.Size(215, 6);
+			this.toolStripMenuItem6.Size = new System.Drawing.Size(217, 6);
 			// 
 			// renameFileMenu
 			// 
 			this.renameFileMenu.Name = "renameFileMenu";
-			this.renameFileMenu.Size = new System.Drawing.Size(218, 22);
+			this.renameFileMenu.Size = new System.Drawing.Size(220, 22);
 			this.renameFileMenu.Text = "保存ファイル名にリネーム(&C)";
 			this.renameFileMenu.Click += new System.EventHandler(this.renameFileMenu_Click);
 			// 
@@ -855,7 +873,7 @@
 			this.unreadMenu.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.unreadMenu.ImageTransparentColor = System.Drawing.Color.Fuchsia;
 			this.unreadMenu.Name = "unreadMenu";
-			this.unreadMenu.Size = new System.Drawing.Size(218, 22);
+			this.unreadMenu.Size = new System.Drawing.Size(220, 22);
 			this.unreadMenu.Text = "未読フラグ(&U)";
 			this.unreadMenu.Click += new System.EventHandler(this.unreadMenu_Click);
 			// 
@@ -864,7 +882,7 @@
 			this.RecordPropertyMenu.Image = global::magicAnime.Properties.Resources.ProgramProperty;
 			this.RecordPropertyMenu.ImageTransparentColor = System.Drawing.Color.Fuchsia;
 			this.RecordPropertyMenu.Name = "RecordPropertyMenu";
-			this.RecordPropertyMenu.Size = new System.Drawing.Size(218, 22);
+			this.RecordPropertyMenu.Size = new System.Drawing.Size(220, 22);
 			this.RecordPropertyMenu.Text = "エピソードのプロパティ(&O)";
 			this.RecordPropertyMenu.Click += new System.EventHandler(this.RecordPropertyMenu_Clicked);
 			// 
@@ -1198,7 +1216,7 @@
 			this.MainMenuStrip = this.menuStrip;
 			this.Name = "MainForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "mAgicAnime.NET fix. yossiepon_20160925";
+			this.Text = "mAgicAnime.NET fix. yossiepon_20170121";
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.Shown += new System.EventHandler(this.MainForm_Shown);
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
@@ -1324,7 +1342,9 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem10;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
         private System.Windows.Forms.ToolStripMenuItem updateProgramPlanMenu;
-        private System.Windows.Forms.ToolStripMenuItem deleteInvalidEpisode;
+        private System.Windows.Forms.ToolStripMenuItem deleteInvalidEpisodeMenu;
+		private System.Windows.Forms.ToolStripMenuItem unfixedInvalidEpisodeMenu;
+		private System.Windows.Forms.ToolStripMenuItem enforceRecordedStatusMenu;
 	}
 }
 

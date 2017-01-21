@@ -1674,6 +1674,10 @@ namespace magicAnime
                     bool    enableUpdateProg    = true;
                     bool    enableDeleteInv     = false;
                     // add yossiepon 20160924 end
+                    // add yossiepon 20170121 begin
+                    bool    enableEnforceRec    = true;
+                    bool    enableUnfixedInv    = true;
+                    // add yossiepon 20170121 end
 
 					foreach(AnimeEpisode ep in episodes)
 					{
@@ -1694,6 +1698,14 @@ namespace magicAnime
 						enableUnread	&= !isMulti;
 
 						enableProp		&= !isMulti;
+
+						// add yossiepon 20170121 begin
+                        // 強制録画済み化判定：予約可能か？
+						enableEnforceRec	= enableReserve;
+
+                        // 無効データ未確定化判定：選択中のセルが放送プランデータ異常、かつプランあり、かつ未予約、かつファイルなしか？
+						enableUnfixedInv	&= ep.PlanError && ep.HasPlan && !ep.IsReserved && !ep.HasFile;
+						// add yossiepon 20170121 end
 					}
 
                     // add yossiepon 20160925 begin
@@ -1770,8 +1782,12 @@ namespace magicAnime
 					RecordPropertyMenu.Enabled	= enableProp;
                     // add yossiepon 20160924 begin
                     updateProgramPlanMenu.Enabled   = enableUpdateProg;
-                    deleteInvalidEpisode.Enabled    = enableDeleteInv;
+                    deleteInvalidEpisodeMenu.Enabled    = enableDeleteInv;
                     // add yossiepon 20160924 end
+                    // add yossiepon 20170121 begin
+					enforceRecordedStatusMenu.Enabled = enableEnforceRec;
+					unfixedInvalidEpisodeMenu.Enabled = enableUnfixedInv;
+                    // add yossiepon 20170121 end
 
 					unreadMenu.Checked = !isMulti && episodes[0].Unread;
 					unreadMenu.Visible = !Settings.Default.disableUnread;
@@ -3025,7 +3041,7 @@ namespace magicAnime
         ///	</summary>
         /// <remarks>
         /// </remarks>
-        /// <history>2006/XX/XX 新規作成</history>
+        /// <history>2016/09/24 新規作成</history>
         //========================================================================
         private void updateProgramPlanMenu_Click(object sender, EventArgs e)
         {
@@ -3049,7 +3065,7 @@ namespace magicAnime
         ///	</summary>
         /// <remarks>
         /// </remarks>
-        /// <history>2006/XX/XX 新規作成</history>
+        /// <history>2016/09/24 新規作成</history>
         //========================================================================
         private void deleteInvalidEpisode_Click(object sender, EventArgs e)
         {
@@ -3068,6 +3084,47 @@ namespace magicAnime
             }
         }
         // add yossiepon 20160924 end
+
+        // add yossiepon 20170121 begin
+        //=========================================================================
+        ///	<summary>
+        ///		録画済み状態強制設定メニュー項目のクリック処理
+        ///	</summary>
+        /// <remarks>
+        /// </remarks>
+        /// <history>2017/01/21 新規作成</history>
+        //========================================================================
+		private void enforceRecordedStatusMenu_Click(object sender, EventArgs e)
+		{
+			var episodes	= GridSelectEpisodes;
+
+			foreach(var ep in episodes)
+			{
+				// 選択された回を最終保存先に転送済みにする
+				ep.HasFile = true;
+				ep.IsStored = true;
+			}	
+		}
+
+        //=========================================================================
+        ///	<summary>
+        ///		無効途中回プラン未確定状態設定メニュー項目のクリック処理
+        ///	</summary>
+        /// <remarks>
+        /// </remarks>
+        /// <history>2017/01/21 新規作成</history>
+        //========================================================================
+		private void unfixedInvalidEpisodeMenu_Click(object sender, EventArgs e)
+		{
+			var episodes	= GridSelectEpisodes;
+
+			foreach(var ep in episodes)
+			{
+				// 選択された回の放送プランを未確定に戻す
+				ep.HasPlan = false;
+			}	
+		}
+        // add yossiepon 20170121 end
 	}
 	
 }
