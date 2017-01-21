@@ -617,8 +617,17 @@ namespace magicAnime
 									{
 										episodeStrBuf.Append('、');
 									}
+
+                                    // ナンバリングできない話数は書式化しない
+                                    if(convertDecimalEpisodeNoToInt(dummyNums[i]) == UNNUMBERED_EPISODE)
+                                    {
+                                        episodeStrBuf.Append(dummyNums[i]);
+                                    }
+                                    else
+                                    {
 									episodeStrBuf.Append(formatEpisodeNo(dummyNums[i]));
 								}
+                                }
 
 								episodeStr = episodeStrBuf.ToString();
 							}
