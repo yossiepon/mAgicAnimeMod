@@ -520,8 +520,12 @@ namespace magicAnime
 						// HTMLエンコード文字をデコード
 						syoboiRecord.subtitle =	HttpUtility.HtmlDecode(MakeNaked((string)Cols[4]));	// サブタイトル
 
-						// 最初の話数が端数だった場合
-						if ( convertDecimalEpisodeNoToInt(firstEpisode) == UNNUMBERED_EPISODE )
+						// mod yossiepon 20170930 begin
+						// // 最初の話数が端数だった場合
+						// if ( convertDecimalEpisodeNoToInt(firstEpisode) == UNNUMBERED_EPISODE )
+						// 最初の話数が0話でない、かつ端数だった場合
+						if ( (firstEpisode != decimal.Zero) && (convertDecimalEpisodeNoToInt(firstEpisode) == UNNUMBERED_EPISODE) )
+						// mod yossiepon 20170930 end
 						{
 							// 端数のままダミー話数リストに追加する
 							dummyNums.Add(firstEpisode);
@@ -653,7 +657,7 @@ namespace magicAnime
 				}
 				else
 				{
-                    decimal storyNo         = decimal.Parse((string)Cols[3]);
+                    decimal storyNo         = Decimal.Parse((string)Cols[3]);
                     syoboiRecord.number		= convertDecimalEpisodeNoToInt(storyNo);    // 話番号
                     if (storyNo != decimal.Zero)
                     {
