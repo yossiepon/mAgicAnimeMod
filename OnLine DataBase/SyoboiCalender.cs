@@ -383,7 +383,10 @@ namespace magicAnime
 					Match	matchTitle	= parseTitle.Match(line);
 
 					if( matchTitle.Success )
-						title = matchTitle.Groups["Title"].Value;
+						// mod yossiepon 20150705 begin
+						// title = matchTitle.Groups["Title"].Value;
+						title = HttpUtility.HtmlDecode( matchTitle.Groups["Title"].Value );
+						// mod yossiepon 20150705 end
 				}
 
 				allLine += line;

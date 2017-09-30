@@ -64,7 +64,7 @@ namespace magicAnime.UserInterface
 			mNotifyIcon.DoubleClick		+= notifyIcon_DoubleClick;
 			mNotifyIcon.BalloonTipIcon	= ToolTipIcon.Info;
 			mNotifyIcon.BalloonTipTitle	= "mAgicAnime";
-			mNotifyIcon.Text			= "mAgicAnime fix. yossiepon_20170121";
+			mNotifyIcon.Text			= "mAgicAnime fix. yossiepon_20170930";
 //			trayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject( "notifyIcon.Icon" )));
 
 			//---------------------------
