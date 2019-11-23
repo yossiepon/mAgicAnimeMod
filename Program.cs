@@ -818,6 +818,7 @@ namespace magicAnime.Properties
     }
 }
 
+#if false
 namespace magicAnime.Properties
 {
     partial class Settings
@@ -847,5 +848,5 @@ namespace magicAnime.Properties
     }
 
 }
-
+#endif
 
