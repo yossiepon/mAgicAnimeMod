@@ -627,8 +627,12 @@ namespace magicAnime
 					if( 0 <= mRepeatNumber )
 						syoboiRecord = SyoboiRecordFilter.NumberPlanFilter(
 							records,
-							mRepeatNumber,
-							out mRepeatNumber );
+                            // mod yossiepon 20191123 begin
+                            // NumberPlanFilter ‚Ì‘æ2ˆø”‚Í1Žn‚Ü‚è‚¾‚ªAmRepeatNumber‚Í0Žn‚Ü‚è‚È‚Ì‚ÅC³
+                            //mRepeatNumber,
+                            mRepeatNumber + 1,
+                            // mod yossiepon 20191123 end
+                            out mRepeatNumber );
 					else
 						records = null;
 				}
