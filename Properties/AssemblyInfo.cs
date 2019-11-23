@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // アセンブリに関する一般情報は以下の属性セットをとおして制御されます。 
 // アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更してください。
-[assembly: AssemblyTitle("mAgicAnime Ver.7sh mod. yossiepon_20170930")]
+[assembly: AssemblyTitle("mAgicAnime Ver.7sh mod. yossiepon_20191123")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("mAgicAnime.NET (ななし版, mod. yossiepon_20170930)")]
-[assembly: AssemblyCopyright("Copyright (C) 2006-2010 mAgicAnime Project")]
+[assembly: AssemblyProduct("mAgicAnime.NET (ななし版, mod. yossiepon_20191123)")]
+[assembly: AssemblyCopyright("Copyright (C) 2006-2010 mAgicAnime Project, 2012 ななし, 2015-2019 yossiepon")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -30,4 +30,4 @@ using System.Runtime.InteropServices;
 //      Revision
 //
 [assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.0.14.20170930")]
+[assembly: AssemblyFileVersion("2.0.14.MOD20191123")]

@@ -629,8 +629,8 @@ namespace magicAnime
                                     }
                                     else
                                     {
-									episodeStrBuf.Append(formatEpisodeNo(dummyNums[i]));
-								}
+                                        episodeStrBuf.Append(formatEpisodeNo(dummyNums[i]));
+                                    }
                                 }
 
 								episodeStr = episodeStrBuf.ToString();
@@ -1002,41 +1002,41 @@ namespace magicAnime
 		{
             ArrayList tvStationList = ListupTvStation(syoboi);
 
-            foreach (string tvStation in tvStationList) {
-
-                int curSpEpNo = -1;
-
-			Dictionary<string, int> specialEpNos = new Dictionary<string, int>();
-
-                // 特番回に話数を振る
-                for (int i = 0; i < syoboi.Count; i++)
+            foreach (string tvStation in tvStationList)
 			{
-                    if (syoboi[i].tvStation.Equals(tvStation))
+				int curSpEpNo = -1;
+
+				Dictionary<string, int> specialEpNos = new Dictionary<string, int>();
+
+				// 特番回に話数を振る
+				for (int i = 0; i < syoboi.Count; i++)
 				{
-                        int epNo = syoboi[i].number;
-                        string subtitle = syoboi[i].subtitle;
-
-                        // 話数が特番回（UNNUMBERED_EPISODE）なら
-					if (epNo == UNNUMBERED_EPISODE)
+					if (syoboi[i].tvStation.Equals(tvStation))
 					{
-						// 特別編の話数がディクショナリに存在したら	
-                            if (specialEpNos.ContainsKey(subtitle))
-						{
-							// 保存済みの話数を使用する
-							epNo = specialEpNos[subtitle];
-						}
-						else
-						{
-							// 存在しなければ、新しい話数を発番して保存する
-                                epNo = curSpEpNo--;
-							specialEpNos.Add(subtitle, epNo);
-						}
+						int epNo = syoboi[i].number;
+						string subtitle = syoboi[i].subtitle;
 
-						// 話数文字列が振られていなければ「SPn」にする
-                            if (syoboi[i].episode.Length == 0)
+						// 話数が特番回（UNNUMBERED_EPISODE）なら
+						if (epNo == UNNUMBERED_EPISODE)
 						{
-                                syoboi[i].episode = Settings.Default.unnumberedEpisodePrefix + (-epNo);
-						}
+							// 特別編の話数がディクショナリに存在したら	
+							if (specialEpNos.ContainsKey(subtitle))
+							{
+								// 保存済みの話数を使用する
+								epNo = specialEpNos[subtitle];
+							}
+							else
+							{
+								// 存在しなければ、新しい話数を発番して保存する
+								epNo = curSpEpNo--;
+								specialEpNos.Add(subtitle, epNo);
+							}
+
+							// 話数文字列が振られていなければ「SPn」にする
+							if (syoboi[i].episode.Length == 0)
+							{
+								syoboi[i].episode = Settings.Default.unnumberedEpisodePrefix + (-epNo);
+							}
 
                             // 特番回に話数をつける
                             syoboi[i].number = epNo;

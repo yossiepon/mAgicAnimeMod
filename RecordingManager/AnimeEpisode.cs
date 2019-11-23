@@ -593,7 +593,13 @@ namespace magicAnime
 				if( this.HasPlan && this.IsReserved )
 					keep = (this.StartDateTime <= now);
 
-				if( keep )
+                // mod yossiepon 20191123 begin
+                // 録画完了後はkeepがfalseになるので、dontCareを見ていないmSubTitleが上書きされる可能性がある。
+                // 例：録画回より後に連続話数の再放送回が登録された場合にサブタイトルが「#mm～#nn」で上書きされる
+                // 従って、dontCareがtrueの場合もプランを変更しないようにして上書きを回避する。
+                //if (keep)
+                if (keep || dontCare)
+                // mod yossiepon 20191123 end
 				{
 					// 録画開始後はプランを変更しない
 					if( 0 <= mRepeatNumber )
