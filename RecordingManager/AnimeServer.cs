@@ -588,19 +588,26 @@ namespace magicAnime
 		internal void SortAnime(AnimeSort sort)
 		{
 			lock( mAnimeList )
-				mAnimeList.Sort( sort );
-			
-		}
+            // mod yossiepon 20191124 begin
+            //    mAnimeList.Sort( sort );
+            {
+                DateTime baseTime = DateTime.Now;
+                mAnimeList.ForEach(x => sort.PreScan(x, baseTime));
+                mAnimeList.Sort(sort);
+            }
+            // mod yossiepon 20191124 end
 
-		//=========================================================================
-		///	<summary>
-		///		録画データをオンラインで更新する
-		///	</summary>
-		/// <remarks>
-		/// </remarks>
-		/// <history>2006/XX/XX 新規作成</history>
-		//=========================================================================
-		public void UpdateOnline(
+        }
+
+        //=========================================================================
+        ///	<summary>
+        ///		録画データをオンラインで更新する
+        ///	</summary>
+        /// <remarks>
+        /// </remarks>
+        /// <history>2006/XX/XX 新規作成</history>
+        //=========================================================================
+        public void UpdateOnline(
 			List<AnimeProgram>	animes	,		// [i] 更新対象の番組
 			bool				force	,		// [i] 強制更新
 			ProgressUpdateDelegate callBack )	// [i] プログレス通知

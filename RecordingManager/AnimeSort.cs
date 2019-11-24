@@ -13,21 +13,24 @@ using magicAnime.Properties;
 
 namespace magicAnime
 {
-	//=========================================================================
-	///	<summary>
-	///		AnimeProgramリストのソートコンペアラクラス
-	///	</summary>
-	/// <remarks>
-	/// </remarks>
-	/// <history>2006/XX/XX 新規作成</history>
-	//=========================================================================
-	class AnimeSort : System.Collections.Generic.IComparer<AnimeProgram>
-	{
-		//--------------------
-		// コンペア条件
-		//--------------------
+    //=========================================================================
+    ///	<summary>
+    ///		AnimeProgramリストのソートコンペアラクラス
+    ///	</summary>
+    /// <remarks>
+    /// </remarks>
+    /// <history>2006/XX/XX 新規作成</history>
+    //=========================================================================
+    // mod yossiepon 20191124 begin
+    //class AnimeSort : System.Collections.Generic.IComparer<AnimeProgram>
+    abstract class AnimeSort : System.Collections.Generic.IComparer<AnimeProgram>
+    // mod yossiepon 20191124 end
+    {
+        //--------------------
+        // コンペア条件
+        //--------------------
 
-		public enum Order
+        public enum Order
 		{
 			DayOfWeek,		// 曜日ごと
 			NextOnair,		// 次回放送日時順
@@ -41,36 +44,47 @@ namespace magicAnime
 			Limit1CoursOption = 2,// ソート基準を最新1クールに限る
 		};
 
-		private Order order;
-		private OrderOption orderOption;
-		//		private bool last;
+        // mod yossiepon 20191124 begin
+        //private Order order;
+		//private OrderOption orderOption;
+        ////		private bool last;
+        protected Order order;
+        protected OrderOption orderOption;
+        // mod yossiepon 20191124 end
 
-		//=========================================================================
-		///	<summary>
-		///		コンストラクタ
-		///	</summary>
-		/// <remarks>
-		/// </remarks>
-		/// <history>2006/XX/XX 新規作成</history>
-		//=========================================================================
-		public AnimeSort( Order order, OrderOption option )
+        //=========================================================================
+        ///	<summary>
+        ///		コンストラクタ
+        ///	</summary>
+        /// <remarks>
+        /// </remarks>
+        /// <history>2006/XX/XX 新規作成</history>
+        //=========================================================================
+        public AnimeSort( Order order, OrderOption option )
 		{
 			this.order = order;
 			this.orderOption = option;
 			//			this.last			= last;
 		}
 
-		//=========================================================================
-		///	<summary>
-		///		AnimeProgramの放送時間コンペア
-		///	</summary>
-		/// <remarks>
-		/// </remarks>
-		/// <history>2006/XX/XX 新規作成</history>
-		//=========================================================================
-		public int Compare( AnimeProgram x, AnimeProgram y )
-		{
-			AnimeEpisode nextA, nextB;
+        // add yossiepon 20191124 begin
+        public abstract void PreScan(AnimeProgram p, DateTime baseTime);
+        // add yossiepon 20191124 end
+
+        //=========================================================================
+        ///	<summary>
+        ///		AnimeProgramの放送時間コンペア
+        ///	</summary>
+        /// <remarks>
+        /// </remarks>
+        /// <history>2006/XX/XX 新規作成</history>
+        //=========================================================================
+        // mod yossiepon 20191124 begin
+        public abstract int Compare(AnimeProgram x, AnimeProgram y);
+#if false
+        public int Compare(AnimeProgram x, AnimeProgram y)
+        {
+            AnimeEpisode nextA, nextB;
 			AnimeProgram.NextEpisode resultA, resultB;
 
 			//--------------------------
@@ -228,264 +242,9 @@ namespace magicAnime
 					return +1;
 			}
 
-			return 0;
+            return 0;
 		}
-
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif
+// mod yossiepon 20191124 end
+    }
 }

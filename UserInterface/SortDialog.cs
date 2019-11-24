@@ -65,10 +65,13 @@ namespace magicAnime.UserInterface
 					orderOption |= AnimeSort.OrderOption.Limit1CoursOption;
 				}
 
-				AnimeSort comparer = new AnimeSort( order, orderOption );
+                // mod yossiepon 20191124 begin
+                //AnimeSort comparer = new AnimeSort(order, orderOption);
+                AnimeSort comparer = new AnimeSortMod(order, orderOption);
+                // mod yossiepon 20191124 end
 
-// <MOD> 2010/01/06 ->
-				server.SortAnime( comparer );
+                // <MOD> 2010/01/06 ->
+                server.SortAnime( comparer );
 //				server.Animes.Sort( comparer );
 // <MOD> 2010/01/06 <-
 

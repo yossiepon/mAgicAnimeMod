@@ -65,8 +65,11 @@ namespace magicAnime
 		public int							priority				= 30;	// 優先度(最低10～最高50)
 		public bool							enableFilterKeyword		= false;	// 録画ファイルを指定文字列でフィルタ
 		public string						filterKeyword			= "";		// フィルタ文字列
+        // add yossiepon 20191124 begin
+        public DateTime                     mSortRepresentative;            // ソートに使用する代表時刻
+        // add yossiepon 20191124 end
 
-		private	int							mStoryCount;
+        private int							mStoryCount;
         // add yossiepon 20160806 begin
         private int                         mSpecialStoryCount;
         // add yossiepon 20160806 end
@@ -82,8 +85,8 @@ namespace magicAnime
 		private EpisodeList					mSpecialEpisodes;				// この番組の符番されていない各話(Episode)の集合
         // add yossiepon 20160806 end
 		private	Mutex						mEpisodeLock		= new Mutex();
-		private DateTime					mLastUpdate;					// データｰベースからの最終更新時刻
-		private Image						mThambnailImage		= null;
+		private DateTime					mLastUpdate;                    // データｰベースからの最終更新時刻
+        private Image						mThambnailImage		= null;
 		private Mutex						mThambnailLock		= new Mutex();
 
 
