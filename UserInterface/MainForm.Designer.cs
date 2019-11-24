@@ -98,8 +98,8 @@
 			this.encodeGroupSeparator = new System.Windows.Forms.ToolStripSeparator();
 			this.encodeMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.storeMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
-            this.updateProgramPlanMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+			this.updateProgramPlanMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.enforceRecordedStatusMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.unfixedInvalidEpisodeMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.deleteInvalidEpisodeMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -246,9 +246,9 @@
 			this.dataGrid.AllowUserToAddRows = false;
 			this.dataGrid.AllowUserToDeleteRows = false;
 			this.dataGrid.AllowUserToResizeRows = false;
-			this.dataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this.dataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.dataGrid.BackgroundColor = System.Drawing.SystemColors.Window;
 			this.dataGrid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.dataGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
@@ -424,8 +424,8 @@
 			this.ForceRefreshMenu.Image = global::magicAnime.Properties.Resources.FullUpdate;
 			this.ForceRefreshMenu.ImageTransparentColor = System.Drawing.Color.Fuchsia;
 			this.ForceRefreshMenu.Name = "ForceRefreshMenu";
-			this.ForceRefreshMenu.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-						| System.Windows.Forms.Keys.R)));
+			this.ForceRefreshMenu.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.R)));
 			this.ForceRefreshMenu.Size = new System.Drawing.Size(256, 22);
 			this.ForceRefreshMenu.Text = "完全データ更新(&E)";
 			this.ForceRefreshMenu.Click += new System.EventHandler(this.ForceRefreshMenu_Click);
@@ -517,8 +517,8 @@
 			// BatchEncodeAllMenu
 			// 
 			this.BatchEncodeAllMenu.Name = "BatchEncodeAllMenu";
-			this.BatchEncodeAllMenu.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-						| System.Windows.Forms.Keys.B)));
+			this.BatchEncodeAllMenu.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.B)));
 			this.BatchEncodeAllMenu.Size = new System.Drawing.Size(354, 22);
 			this.BatchEncodeAllMenu.Text = "未処理分をエンコードキューに入れる(&E)";
 			this.BatchEncodeAllMenu.Click += new System.EventHandler(this.BatchEncodeAllMenu_Click);
@@ -664,9 +664,9 @@
 			// 
 			this.logStatusLabel.ActiveLinkColor = System.Drawing.SystemColors.ControlText;
 			this.logStatusLabel.BackColor = System.Drawing.SystemColors.Control;
-			this.logStatusLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-						| System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-						| System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+			this.logStatusLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
 			this.logStatusLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
 			this.logStatusLabel.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.logStatusLabel.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -680,9 +680,9 @@
 			// 
 			// toolStripStatusLabel1
 			// 
-			this.toolStripStatusLabel1.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-						| System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-						| System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+			this.toolStripStatusLabel1.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
 			this.toolStripStatusLabel1.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
 			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
 			this.toolStripStatusLabel1.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
@@ -691,9 +691,9 @@
 			// 
 			// todayOnAirLabel
 			// 
-			this.todayOnAirLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-						| System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-						| System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+			this.todayOnAirLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
 			this.todayOnAirLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
 			this.todayOnAirLabel.Name = "todayOnAirLabel";
 			this.todayOnAirLabel.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
@@ -702,9 +702,9 @@
 			// storeFolderLabel
 			// 
 			this.storeFolderLabel.AutoToolTip = true;
-			this.storeFolderLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-						| System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-						| System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+			this.storeFolderLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
 			this.storeFolderLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
 			this.storeFolderLabel.Image = ((System.Drawing.Image)(resources.GetObject("storeFolderLabel.Image")));
 			this.storeFolderLabel.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
@@ -722,9 +722,9 @@
 			// recordDriveFreeSpaceLabel
 			// 
 			this.recordDriveFreeSpaceLabel.AutoToolTip = true;
-			this.recordDriveFreeSpaceLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-						| System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-						| System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+			this.recordDriveFreeSpaceLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
 			this.recordDriveFreeSpaceLabel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
 			this.recordDriveFreeSpaceLabel.Image = ((System.Drawing.Image)(resources.GetObject("recordDriveFreeSpaceLabel.Image")));
 			this.recordDriveFreeSpaceLabel.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
@@ -888,8 +888,8 @@
 			// 
 			// panel3
 			// 
-			this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.panel3.BackColor = System.Drawing.Color.Transparent;
 			this.panel3.Controls.Add(this.datePictureBox);
 			this.panel3.Controls.Add(this.statusPictureBox);
@@ -910,8 +910,8 @@
 			// 
 			// titleLabel
 			// 
-			this.titleLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this.titleLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.titleLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.titleLabel.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.titleLabel.Location = new System.Drawing.Point(97, 7);
@@ -931,8 +931,8 @@
 			// 
 			// dateTimeLabel
 			// 
-			this.dateTimeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this.dateTimeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.dateTimeLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.dateTimeLabel.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.dateTimeLabel.Location = new System.Drawing.Point(412, 60);
@@ -952,8 +952,8 @@
 			// 
 			// filePathLabel
 			// 
-			this.filePathLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this.filePathLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.filePathLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.filePathLabel.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.filePathLabel.Location = new System.Drawing.Point(97, 31);
@@ -1169,9 +1169,9 @@
 			// 
 			// viewSplitContainer
 			// 
-			this.viewSplitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this.viewSplitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.viewSplitContainer.Location = new System.Drawing.Point(0, 149);
 			this.viewSplitContainer.Name = "viewSplitContainer";
 			this.viewSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -1189,9 +1189,9 @@
 			// 
 			// logListBox
 			// 
-			this.logListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this.logListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.logListBox.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.logListBox.FormattingEnabled = true;
 			this.logListBox.IntegralHeight = false;
@@ -1216,7 +1216,7 @@
 			this.MainMenuStrip = this.menuStrip;
 			this.Name = "MainForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "mAgicAnime.NET fix. yossiepon_20191123";
+			this.Text = "mAgicAnime.NET Ver.7sh fix. yossiepon_yyyymmdd";
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.Shown += new System.EventHandler(this.MainForm_Shown);
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);

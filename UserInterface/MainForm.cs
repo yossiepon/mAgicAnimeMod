@@ -124,8 +124,11 @@ namespace magicAnime
 		public MainForm()
 		{
 			InitializeComponent();
+            // add yossiepon 20191124 begin
+            Text = AssemblyHelper.AssemblyTitle;
+            // add yossiepon 20191124 end
 
-			mViewMode = ViewMode.SeriesMode;
+            mViewMode = ViewMode.SeriesMode;
 
 			mQueuingMenuItems	= new List<ToolStripItem>();
 			mEncodingMenuItems	= new List<ToolStripItem>();
@@ -3082,7 +3085,7 @@ namespace magicAnime
             {
                 prog.StoryCount = prog.StoryCount - 1;
             }
-        }
+		}
         // add yossiepon 20160924 end
 
         // add yossiepon 20170121 begin

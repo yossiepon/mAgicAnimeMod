@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Reflection;
+using Helpers;
 
 namespace magicAnime
 {
@@ -37,19 +38,28 @@ namespace magicAnime
 		private void SetComponent()
 		{
 
-			//  アセンブリ情報からの製品情報を表示する情報ボックスを初期化します。
-			//  アプリケーションのアセンブリ情報設定を次のいずれかにて変更します:
-			//  - [プロジェクト] メニューの [プロパティ] にある [アプリケーション] の [アセンブリ情報]
-			//  - AssemblyInfo.cs
-			this.Text = String.Format("{0} のバージョン情報", AssemblyTitle);
-			this.labelProductName.Text = AssemblyProduct;
-// 2009/04/14 ->
-			this.labelVersion.Text = String.Format("(アセンブリバージョン {0})", AssemblyVersion);
-//			this.labelVersion.Text = String.Format("内部バージョン {0}", AssemblyVersion);
-// 2009/04/14 <-
-			this.labelProductVersion.Text = String.Format("バージョン {0}", Application.ProductVersion);
-//			this.labelCopyright.Text = AssemblyCopyright;
-//			this.labelCompanyName.Text = AssemblyCompany;
+            //  アセンブリ情報からの製品情報を表示する情報ボックスを初期化します。
+            //  アプリケーションのアセンブリ情報設定を次のいずれかにて変更します:
+            //  - [プロジェクト] メニューの [プロパティ] にある [アプリケーション] の [アセンブリ情報]
+            //  - AssemblyInfo.cs
+// mod yossiepon 20191124 begin
+
+//            this.Text = String.Format("{0} のバージョン情報", AssemblyTitle);
+//			this.labelProductName.Text = AssemblyProduct;
+//// 2009/04/14 ->
+//			this.labelVersion.Text = String.Format("(アセンブリバージョン {0})", AssemblyVersion);
+////			this.labelVersion.Text = String.Format("内部バージョン {0}", AssemblyVersion);
+//// 2009/04/14 <-
+//			this.labelProductVersion.Text = String.Format("バージョン {0}", Application.ProductVersion);
+////			this.labelCopyright.Text = AssemblyCopyright;
+////			this.labelCompanyName.Text = AssemblyCompany;
+
+            this.Text = String.Format("{0} のバージョン情報", AssemblyHelper.AssemblyTitle);
+            this.labelProductName.Text = AssemblyHelper.AssemblyProduct;
+            this.labelVersion.Text = String.Format("(アセンブリバージョン {0})", AssemblyHelper.AssemblyVersion);
+            this.labelProductVersion.Text = String.Format("バージョン {0}", Application.ProductVersion);
+
+// mod yossiepon 20191124 end
 
 // <ADD> 2010/02/20 ->
 			//------------------------------------------
@@ -103,9 +113,11 @@ namespace magicAnime
 			timer.Start();
 		}
 
-		#region アセンブリ属性アクセサ
+// del yossiepon 20191124 begin
+#if false
+        #region アセンブリ属性アクセサ
 
-		public string AssemblyTitle
+        public string AssemblyTitle
 		{
 			get
 			{
@@ -188,10 +200,13 @@ namespace magicAnime
 				return ((AssemblyCompanyAttribute)attributes[0]).Company;
 			}
 		}
-		#endregion
 
-		// 自動的に消す
-		private void timer_Tick(object sender, EventArgs e)
+        #endregion
+#endif
+// del yossiepon 20191124 end
+
+        // 自動的に消す
+        private void timer_Tick(object sender, EventArgs e)
 		{
 			Close();
 		}
