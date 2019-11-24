@@ -3037,6 +3037,23 @@ namespace magicAnime
 			}
 		}
 
+		// add 7sh 2.0.14.10 2012-03-30 begin
+        //=========================================================================
+        ///	<summary>
+        ///		リサイズの限定
+        ///	</summary>
+        /// <remarks>
+        /// </remarks>
+        /// <history>2012/02/23 新規作成</history>
+        //========================================================================
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized) { return; }
+            if (this.Width < 758) { this.Width = 758; }
+            if (this.Height < 310) { this.Height = 310; }
+        }
+		// add 7sh 2.0.14.10 2012-03-30 end
+
         // add yossiepon 20160924 begin
         //=========================================================================
         ///	<summary>

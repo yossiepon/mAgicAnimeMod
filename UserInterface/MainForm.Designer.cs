@@ -1221,6 +1221,7 @@
 			this.Shown += new System.EventHandler(this.MainForm_Shown);
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+			this.Resize += new System.EventHandler(this.MainForm_Resize);
 			((System.ComponentModel.ISupportInitialize)(this.filePictureBox)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.titlePictureBox)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.statusPictureBox)).EndInit();

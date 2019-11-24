@@ -562,7 +562,7 @@ namespace magicAnime
 								if (mInputTitle != null)
 								{
 									titleTextBox.Text = mInputTitle;
-									mInputTitle=  null;
+                                    mInputTitle = null;
 								}
 							}
 						};
@@ -659,6 +659,7 @@ namespace magicAnime
 
 			dlg.ShowDialog();
 		}
+
 		//=========================================================================
 		///	<summary>
 		///		コントロールの状態更新
@@ -680,6 +681,27 @@ namespace magicAnime
 			recordTvStationTextBox.Enabled	= (mLinkOnline && mCheckedRecordTvStation) || !mLinkOnline;
 			recordTvStationCheckBox.Enabled	= mLinkOnline;
 		}
+
+        //=========================================================================
+        ///	<summary>
+        ///		しょぼカルを開く
+        ///	</summary>
+        /// <remarks>
+        /// </remarks>
+        /// <history>2012/03/19 新規作成</history>
+        //=========================================================================
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            int tid  = (int)syoboiTidUpdown.Value;
+            if (tid != 0)
+            {
+                System.Diagnostics.Process.Start("http://cal.syoboi.jp/tid/" + tid.ToString());
+            }
+            else
+            {
+                System.Diagnostics.Process.Start("http://cal.syoboi.jp/");
+            }
+        }
 
 	}
 

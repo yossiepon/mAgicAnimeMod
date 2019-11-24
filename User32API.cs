@@ -126,8 +126,6 @@ namespace User32API
 
 				gctext.Free();
 
-				string aa;
-
 				text = Encoding.GetEncoding( 932 ).GetString( buffer, 0, 250 );
 
 				Console.Write( text );
