@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyHelper.cs" />
     <Compile Include="BatchManager.cs" />
     <Compile Include="PathHelper.cs" />
     <Compile Include="DateTimeHelper.cs" />
