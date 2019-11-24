@@ -65,6 +65,9 @@ namespace magicAnime
 		public int							priority				= 30;	// 優先度(最低10～最高50)
 		public bool							enableFilterKeyword		= false;	// 録画ファイルを指定文字列でフィルタ
 		public string						filterKeyword			= "";		// フィルタ文字列
+        // add yossiepon 20191124 begin
+        public DateTime                     mSortRepresentative;            // ソートに使用する代表時刻
+        // add yossiepon 20191124 end
 
 		private	int							mStoryCount;
 		private	uint						mHashCode			= 0;
@@ -331,17 +334,17 @@ namespace magicAnime
 					foreach( AnimeEpisode ep in mEpisodes )
 						coppied.Add( ep );
 
-					return coppied;
-				}
-				finally
-				{
-					mEpisodeLock.ReleaseMutex();
-				}
-			}
-		}
+                    return coppied;
+                }
+                finally
+                {
+                    mEpisodeLock.ReleaseMutex();
+                }
+            }
+        }
 
-		//=========================================================================
-		///	<summary>
+        //=========================================================================
+        ///	<summary>
 		///		番組固有IDを返す
 		///	</summary>
 		/// <remarks>
@@ -573,6 +576,8 @@ namespace magicAnime
 			if( Episodes.Count == 0 )
 				return NextEpisode.NextUnknown;
 
+			// del by 7sh 2.0.14.10 2012-03-30 begin
+            /* しょぼカルは、すべて登録されていな場合がある
 			AnimeEpisode lastEpisode = Episodes[Episodes.Count-1];
 
 			if ( lastEpisode.HasPlan &&
@@ -581,6 +586,8 @@ namespace magicAnime
 				earlyOnAir	= null;
 				return NextEpisode.EndProgram;
 			}
+            */
+			// del by 7sh 2.0.14.10 2012-03-30 end
 			
 			//
 			// dateTime以降、リストの中で最も早く放送するEpisodeを見つける
@@ -606,7 +613,10 @@ namespace magicAnime
 			}
 
 			if (earlyOnAir==null)
-				return NextEpisode.NextUnknown;
+				// mod by 7sh 2.0.14.10 2012-03-30 begin
+				// return NextEpisode.NextUnknown;
+                return NextEpisode.EndProgram;
+				// mod by 7sh 2.0.14.10 2012-03-30 end
 
 			return NextEpisode.NextDecided;
 		}
@@ -663,7 +673,7 @@ namespace magicAnime
 				int maxNumber = 0;
 
 				foreach (SyoboiCalender.SyoboiRecord record in syoboiList)
-					maxNumber = System.Math.Max(maxNumber, record.number);
+						maxNumber = System.Math.Max(maxNumber, record.number);
 
 				if (StoryCount < maxNumber)
 					StoryCount = maxNumber;	// 話数が増えた場合だけ増やす
@@ -1054,8 +1064,8 @@ namespace magicAnime
 
 						episode.Read(xr);
 
-						mEpisodes.Add(episode);
-					}
+							mEpisodes.Add(episode);
+						}
 					else if (xr.LocalName.Equals("EncodeClass"))
 					{
 						Encoder encoder;

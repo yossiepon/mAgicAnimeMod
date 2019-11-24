@@ -78,6 +78,7 @@
     <Compile Include="PathHelper.cs" />
     <Compile Include="DateTimeHelper.cs" />
     <Compile Include="MakeThumbnail.cs" />
+    <Compile Include="RecordingManager\AnimeSortMod.cs" />
     <Compile Include="UserInterface\StationTableDialog.cs">
       <SubType>Form</SubType>
     </Compile>
