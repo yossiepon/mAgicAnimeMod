@@ -1219,5 +1219,17 @@ namespace magicAnime.Properties {
                 this["productVersion"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool skipReserveIfReservationError {
+            get {
+                return ((bool)(this["skipReserveIfReservationError"]));
+            }
+            set {
+                this["skipReserveIfReservationError"] = value;
+            }
+        }
     }
 }
