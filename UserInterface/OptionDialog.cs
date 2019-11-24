@@ -104,6 +104,9 @@ namespace magicAnime
 			tunerUpdown.Value				= Settings.Default.overlapThreshould;
 			overlapMarginUpdown.Value		= Settings.Default.overlapMargin;
 			enablePriorityCheckbox.Checked = Settings.Default.enablePriority;
+            // add yossiepon 20191124 begin
+            skipReserveIfReservationErrorCheckBox.Checked = Settings.Default.skipReserveIfReservationError;
+            // add yossiepon 20191124 end
 
 			//-------------------------
 			// "録画ファイル"タブ
@@ -334,7 +337,9 @@ namespace magicAnime
 			Settings.Default.overlapThreshould	= (int)tunerUpdown.Value;
 			Settings.Default.overlapMargin		= (int)overlapMarginUpdown.Value;
 			Settings.Default.enablePriority		= enablePriorityCheckbox.Checked;
-
+            // add yossiepon 20191124 begin
+            Settings.Default.skipReserveIfReservationError = skipReserveIfReservationErrorCheckBox.Checked;
+            // add yossiepon 20191124 end
 
 			//-------------------------
 			// "録画ファイル"タブ

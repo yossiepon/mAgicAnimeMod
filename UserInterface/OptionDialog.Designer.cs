@@ -235,6 +235,8 @@
 			this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
 			this.checkBox5 = new System.Windows.Forms.CheckBox();
 			this.extToolsPathDialog = new System.Windows.Forms.OpenFileDialog();
+            this.groupBox17 = new System.Windows.Forms.GroupBox();
+            this.skipReserveIfReservationErrorCheckBox = new System.Windows.Forms.CheckBox();
 			this.tabControl1.SuspendLayout();
 			this.tabPage6.SuspendLayout();
 			this.groupBox8.SuspendLayout();
@@ -295,6 +297,7 @@
 			this.panel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            this.groupBox17.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// OkButton
@@ -576,6 +579,7 @@
 			// 
 			// tabPage11
 			// 
+            this.tabPage11.Controls.Add(this.groupBox17);
 			this.tabPage11.Controls.Add(this.groupBox16);
 			this.tabPage11.Controls.Add(this.groupBox5);
 			this.tabPage11.Location = new System.Drawing.Point(4, 44);
@@ -2723,6 +2727,25 @@
 			this.extToolsPathDialog.DefaultExt = "EXE";
 			this.extToolsPathDialog.Filter = "実行ファイル(*.EXE)|*.EXE|バッチファイル(*.BAT)|*.BAT|その他|*.*";
 			// 
+            // groupBox17
+            // 
+            this.groupBox17.Controls.Add(this.skipReserveIfReservationErrorCheckBox);
+            this.groupBox17.Location = new System.Drawing.Point(329, 24);
+            this.groupBox17.Name = "groupBox17";
+            this.groupBox17.Size = new System.Drawing.Size(372, 86);
+            this.groupBox17.TabIndex = 2;
+            this.groupBox17.TabStop = false;
+            this.groupBox17.Text = "録画予約エラー時";
+            // 
+            // skipReserveIfReservationErrorCheckBox
+            // 
+            this.skipReserveIfReservationErrorCheckBox.Location = new System.Drawing.Point(16, 26);
+            this.skipReserveIfReservationErrorCheckBox.Name = "skipReserveIfReservationErrorCheckBox";
+            this.skipReserveIfReservationErrorCheckBox.Size = new System.Drawing.Size(335, 19);
+            this.skipReserveIfReservationErrorCheckBox.TabIndex = 0;
+            this.skipReserveIfReservationErrorCheckBox.Text = "予約エラーが出ているときは再度自動予約しない";
+            this.skipReserveIfReservationErrorCheckBox.UseVisualStyleBackColor = true;
+            // 
 			// OptionDialog
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -2828,6 +2851,7 @@
 			this.panel.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            this.groupBox17.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -3041,5 +3065,7 @@
 		private System.Windows.Forms.Label label65;
 		private System.Windows.Forms.CheckBox disableUnreadCheckBox;
 		private System.Windows.Forms.CheckBox exclamationZenkakuCheckBox;
+        private System.Windows.Forms.GroupBox groupBox17;
+        private System.Windows.Forms.CheckBox skipReserveIfReservationErrorCheckBox;
 	}
 }

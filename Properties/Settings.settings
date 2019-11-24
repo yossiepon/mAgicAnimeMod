@@ -306,5 +306,11 @@
     <Setting Name="unnumberedEpisodePrefix" Type="System.String" Scope="Application">
       <Value Profile="(Default)">SP</Value>
     </Setting>
+    <Setting Name="productVersion" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="skipReserveIfReservationError" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

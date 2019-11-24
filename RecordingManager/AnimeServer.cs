@@ -958,7 +958,11 @@ namespace magicAnime
 									&&	(episode.StartDateTime < dateLimit)
 									&&	!isEnd;
 					bool	change	= episode.JudgeTimeChanged;
-					bool	ignore	= episode.IsReserveError;		// —\–ñƒGƒ‰[‚ªo‚Ä‚¢‚é‚Æ‚«Ž©“®—\–ñ‚µ‚È‚¢
+                    // mod yossiepon 20191124 begin
+                    //bool ignore	= episode.IsReserveError;		// —\–ñƒGƒ‰[‚ªo‚Ä‚¢‚é‚Æ‚«Ž©“®—\–ñ‚µ‚È‚¢
+                    // —\–ñƒGƒ‰[‚ªo‚Ä‚¢‚é‚Æ‚«Ž©“®—\–ñ‚µ‚È‚¢
+                    bool ignore	= episode.IsReserveError && Settings.Default.skipReserveIfReservationError;
+                    // mod yossiepon 20191124 begin
 
 					if( ((make && !changeOnly) || change) && !ignore )
 					{
