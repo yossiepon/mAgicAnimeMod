@@ -1,0 +1,4 @@
+Copyright(c) 2015-2019, yossiepon
+Copyright(c) 2012, ななし(7sh)
+Copyright(c) 2010-2012, mAgicAnime製作委員会
+Copyright(c) 2006-2010, Dr.Kurusugawa
